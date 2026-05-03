@@ -1,0 +1,11 @@
+{
+  "name": "agentaegis-site",
+  "version": "1.0.0",
+  "description": "AgentAegis landing page (agentaegis.com)",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve public",
+    "build": "echo 'Static site — no build step needed'"
+  },
+  "license": "MIT"
+}

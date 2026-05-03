@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="AgentAegis — every cybersecurity service, callable by any AI agent. Pay-as-you-go via x402 micropayments or API key. 20 tools. Built for AI agents." />
+
+  <!-- AbuseIPDB domain verification (backup to /abuseipdb-verification.html) -->
+  <meta name="abuseipdb-verification" content="OkRiMxG5" />
+
+  <title>AgentAegis — Cybersecurity for AI Agents</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0e1a;
+      --bg-alt: #0f1422;
+      --bg-card: #141a2e;
+      --border: #1f2940;
+      --text: #e4e8f1;
+      --text-muted: #8a93a8;
+      --primary: #5b8def;
+      --primary-glow: #5b8def33;
+      --accent: #00d4a8;
+      --warn: #ffb547;
+      --crit: #ff6464;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
+
+    a { color: var(--primary); text-decoration: none; transition: opacity 0.15s; }
+    a:hover { opacity: 0.8; }
+
+    .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+    /* === HEADER === */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      backdrop-filter: blur(12px);
+      background: rgba(10, 14, 26, 0.8);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+
+    .logo {
+      font-weight: 800; font-size: 20px; letter-spacing: -0.02em;
+      color: var(--text); display: flex; align-items: center; gap: 8px;
+    }
+    .logo svg { width: 24px; height: 24px; color: var(--primary); }
+
+    .nav-links { display: flex; gap: 32px; align-items: center; }
+    .nav-links a { color: var(--text-muted); font-size: 14px; font-weight: 500; }
+    .nav-links a:hover { color: var(--text); opacity: 1; }
+    .btn {
+      display: inline-block; padding: 9px 18px; border-radius: 8px;
+      font-size: 14px; font-weight: 600; transition: all 0.15s;
+      cursor: pointer; border: none;
+    }
+    .btn-primary {
+      background: var(--primary); color: white;
+      box-shadow: 0 0 0 1px var(--primary), 0 4px 14px var(--primary-glow);
+    }
+    .btn-primary:hover { background: #4a7be0; opacity: 1; transform: translateY(-1px); }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+    .btn-ghost:hover { border-color: var(--primary); color: var(--primary); opacity: 1; }
+
+    @media (max-width: 720px) {
+      .nav-links { gap: 16px; }
+      .nav-links a:not(.btn) { display: none; }
+    }
+
+    /* === HERO === */
+    .hero {
+      padding: 160px 0 100px;
+      background: radial-gradient(ellipse 80% 50% at 50% 0%, rgba(91, 141, 239, 0.15), transparent 60%);
+      text-align: center;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; margin-bottom: 24px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 100px; font-size: 13px; color: var(--text-muted);
+    }
+    .hero-tag-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 64px); font-weight: 800;
+      letter-spacing: -0.03em; line-height: 1.05;
+      max-width: 920px; margin: 0 auto 24px;
+      background: linear-gradient(180deg, #fff 0%, #aab4cc 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero p.subtitle {
+      font-size: clamp(16px, 2vw, 20px); color: var(--text-muted);
+      max-width: 680px; margin: 0 auto 40px; line-height: 1.55;
+    }
+    .hero-cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .hero-cta .btn { padding: 12px 24px; font-size: 15px; }
+
+    .hero-stats {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 24px; margin-top: 80px; max-width: 800px; margin-left: auto; margin-right: auto;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-size: 36px; font-weight: 800; color: var(--text);
+      letter-spacing: -0.02em;
+    }
+    .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+    /* === SECTIONS === */
+    section { padding: 100px 0; }
+    .section-head { text-align: center; margin-bottom: 64px; }
+    .section-eyebrow {
+      font-size: 13px; font-weight: 600; color: var(--primary);
+      letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 12px;
+    }
+    .section-head h2 {
+      font-size: clamp(28px, 4vw, 44px); font-weight: 700;
+      letter-spacing: -0.02em; margin-bottom: 16px;
+    }
+    .section-head p { color: var(--text-muted); max-width: 640px; margin: 0 auto; }
+
+    /* === HOW IT WORKS === */
+    .how {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .how-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 14px; padding: 28px; position: relative;
+    }
+    .how-num {
+      position: absolute; top: -16px; left: 24px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--primary); color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 14px;
+    }
+    .how-card h3 { font-size: 18px; font-weight: 600; margin-bottom: 8px; margin-top: 8px; }
+    .how-card p { color: var(--text-muted); font-size: 14px; }
+
+    /* === TOOLS === */
+    .tools { background: var(--bg-alt); }
+    .tools-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .tool {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px;
+      transition: all 0.15s;
+    }
+    .tool:hover { border-color: var(--primary); transform: translateY(-2px); }
+    .tool-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .tool-name { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: var(--text); }
+    .tool-price { font-size: 13px; color: var(--accent); font-weight: 600; }
+    .tool-desc { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+    .tool-cat {
+      display: inline-block; margin-top: 8px;
+      font-size: 11px; padding: 2px 8px; border-radius: 4px;
+      background: var(--border); color: var(--text-muted);
+      letter-spacing: 0.04em; text-transform: uppercase;
+    }
+
+    /* === PRICING === */
+    .pricing-cards {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px; max-width: 720px; margin: 0 auto;
+    }
+    .price-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 32px; position: relative;
+    }
+    .price-card.featured { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary), 0 8px 32px var(--primary-glow); }
+    .price-card-tag {
+      position: absolute; top: -12px; right: 24px;
+      background: var(--primary); color: white;
+      padding: 4px 12px; border-radius: 6px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .price-card h3 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+    .price-card .desc { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+    .price-features { list-style: none; margin-bottom: 24px; }
+    .price-features li {
+      padding: 8px 0; padding-left: 28px; position: relative;
+      font-size: 14px; color: var(--text);
+    }
+    .price-features li::before {
+      content: ""; position: absolute; left: 0; top: 12px;
+      width: 16px; height: 16px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300d4a8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E") no-repeat center;
+    }
+
+    /* === CODE EXAMPLE === */
+    .code-section { background: var(--bg-alt); }
+    .code-block {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 0;
+      max-width: 720px; margin: 0 auto;
+      overflow: hidden;
+    }
+    .code-header {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 18px; border-bottom: 1px solid var(--border);
+      font-size: 12px; color: var(--text-muted);
+    }
+    .code-dot { width: 12px; height: 12px; border-radius: 50%; }
+    .code-dot.r { background: #ff6464; }
+    .code-dot.y { background: #ffb547; }
+    .code-dot.g { background: #00d4a8; }
+    .code-block pre {
+      padding: 20px;
+      font-family: 'JetBrains Mono', monospace; font-size: 13px;
+      line-height: 1.6; color: var(--text);
+      overflow-x: auto;
+    }
+    .code-block .key { color: #c792ea; }
+    .code-block .str { color: #c3e88d; }
+    .code-block .com { color: var(--text-muted); font-style: italic; }
+
+    /* === FOOTER === */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0 32px;
+      background: var(--bg);
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 32px; margin-bottom: 32px;
+    }
+    @media (max-width: 720px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .footer-brand p { color: var(--text-muted); font-size: 14px; margin-top: 12px; max-width: 280px; }
+    .footer-col h4 {
+      font-size: 13px; color: var(--text-muted);
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-bottom: 16px; font-weight: 600;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { padding: 4px 0; }
+    .footer-col a { color: var(--text); font-size: 14px; }
+    .footer-col a:hover { color: var(--primary); }
+    .footer-bottom {
+      padding-top: 24px; border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+      font-size: 13px; color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container nav">
+    <a href="/" class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2 L4 6 L4 12 C4 17 8 21 12 22 C16 21 20 17 20 12 L20 6 Z"/>
+        <path d="M9 12 L11 14 L15 10"/>
+      </svg>
+      AgentAegis
+    </a>
+    <div class="nav-links">
+      <a href="#tools">Tools</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#integrate">Integrate</a>
+      <a href="https://github.com/astafford8488/agentaegis-mcp" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/astafford8488/agentaegis-mcp" class="btn btn-primary" target="_blank" rel="noopener">Get Started</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-tag">
+        <span class="hero-tag-dot"></span>
+        Live on the Model Context Protocol
+      </div>
+      <h1>Every cybersecurity service, callable by any AI agent.</h1>
+      <p class="subtitle">
+        20 tools. From compliance checks to vulnerability scans to code security analysis.
+        Pay per call via x402 micropayments or API key. No subscriptions, no minimums.
+      </p>
+      <div class="hero-cta">
+        <a href="https://github.com/astafford8488/agentaegis-mcp" class="btn btn-primary" target="_blank" rel="noopener">View on GitHub</a>
+        <a href="#tools" class="btn btn-ghost">Browse Tools</a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat"><div class="stat-num">20</div><div class="stat-label">Security Tools</div></div>
+        <div class="stat"><div class="stat-num">4+</div><div class="stat-label">Compliance Frameworks</div></div>
+        <div class="stat"><div class="stat-num">$0.10</div><div class="stat-label">Cheapest Call</div></div>
+        <div class="stat"><div class="stat-num">MCP</div><div class="stat-label">Native Integration</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">How It Works</div>
+        <h2>Built for autonomous AI agents</h2>
+        <p>Drop-in MCP server with structured tool definitions. Your agent calls them. We handle the security engines.</p>
+      </div>
+
+      <div class="how">
+        <div class="how-card">
+          <div class="how-num">1</div>
+          <h3>Connect</h3>
+          <p>Add AgentAegis to your MCP client config (Claude Desktop, custom agent, n8n) or POST to <span class="mono">/mcp</span> over HTTP.</p>
+        </div>
+        <div class="how-card">
+          <div class="how-num">2</div>
+          <h3>Authorize</h3>
+          <p>Use an API key (monthly budget) or pay per call with x402 micropayments — USDC on Base. No subscription, no commitment.</p>
+        </div>
+        <div class="how-card">
+          <div class="how-num">3</div>
+          <h3>Call tools</h3>
+          <p>Your agent invokes any of 20 tools — compliance checks, vuln scans, code audits, threat intel — with structured input/output.</p>
+        </div>
+        <div class="how-card">
+          <div class="how-num">4</div>
+          <h3>Get structured results</h3>
+          <p>Tools return JSON your agent can act on directly. Severity ratings, remediation steps, references — all machine-readable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tools" class="tools">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">Tool Catalog</div>
+        <h2>20 cybersecurity tools, agent-native</h2>
+        <p>Wrappers around best-in-class engines (nmap, Nuclei, sslyze, Semgrep, trufflehog, trivy) plus framework-aware compliance logic and threat intel aggregation.</p>
+      </div>
+
+      <div class="tools-grid">
+        <div class="tool"><div class="tool-row"><span class="tool-name">compliance_framework_check</span><span class="tool-price">$0.50</span></div><div class="tool-desc">Assess posture against SOC 2, ISO 27001, HIPAA, PCI-DSS, NIST CSF</div><span class="tool-cat">Compliance</span></div>
+        <div class="tool"><div class="tool-row"><span class="tool-name">evidence_collect</span><span class="tool-price">$0.25</span></div><div class="tool-desc">Generate evidence collection plans for audit controls</div><span class="tool-cat">Compliance</span></div>
+        <div class="tool"><div class="tool-row"><span class="tool-name">control_gap_analysis</span><span class="tool-price">$0.50</span></div><div class="tool-desc">Prioritized remediation roadmap with effort estimates</div><span class="tool-cat">Compliance</span></div>
+        <div class="tool"><div class="tool-row"><span class="tool-name">audit_report_generate</span><span class="tool-price">$1.00</span></div><div class="tool-desc">Audit-ready compliance reports for board, auditor, regulator</div><span class="tool-cat">Compliance</span></div>
+        <div class="tool"><div class="tool-row"><span class="tool-name">policy_generate</span><span class="tool-price">$0.50</span></div><div class="tool-desc">Tailored security policies (incident response, access control, etc.)</div><span class="tool-cat">Compliance</span></div>
+
+        <div class="tool"><div class="tool-row"><span class="tool-name">vuln_scan_network</span><span class="tool-price">$1.00</span></div><div class="tool-desc">Scan IPs/domains for open ports, services, vulnerabilities</div><span class="tool-cat">Vuln Mgmt</span></div>
+        <div class="tool"><div class="tool-row"><span class="tool-name">vuln_scan_web_app</span><span class="tool-price">$1.50</span></div><div class="tool-desc">OWASP Top 10 web app vulnerability scan</div><span class="tool-cat">Vuln Mgmt</span></div>
+        <div class="tool"><div class="tool-row"><span class="tool-name">vuln_prioritize</span><span class="tool-price">$0.25</span></div><div class="tool-desc">EPSS + business-context risk scoring</div><span class="tool-cat">Vuln Mgmt</span></div>
+        <div class="tool"><div class="tool-row"><span class="tool-name">cve_lookup</span><span class="tool-price">$0.10</span></div><div class="tool-desc">CVE details, CVSS, KEV status, patches</div><span class="tool-cat">Vuln Mgmt</span></div>
+        <div class="tool"><div class="tool-row"><span class="tool-name">ssl_tls_audit</span><span class="tool-price">$0.25</span></div><div class="tool-desc">Cert validity, protocols, ciphers, vulnerabilities</div><span class="tool-cat">Vuln Mgmt</span></div>
+
+        <div class="tool"><div class="tool-row"><span class="tool-name">sast_scan</span><span class="tool-price">$1.00</span></div><div class="tool-desc">Static analysis for security vulnerabilities (8+ languages)</div><span class="tool-cat">Code</span></div>
+        <div class="tool"><div class="tool-row"><span class="tool-name">secret_scan</span><span class="tool-price">$0.50</span></div><div class="tool-desc">Detect hardcoded secrets, API keys, tokens</div><span class="tool-cat">Code</span></div>
+        <div class="tool"><div class="tool-row"><span class="tool-name">dependency_audit</span><span class="tool-price">$0.50</span></div><div class="tool-desc">CVE check across npm, pip, Go, Ruby, Java, Cargo</div><span class="tool-cat">Code</span></div>
+
+        <div class="tool"><div class="tool-row"><span class="tool-name">incident_triage</span><span class="tool-price">$0.75</span></div><div class="tool-desc">Classify incidents, generate response plans, suggest containment</div><span class="tool-cat">Blue Team</span></div>
+        <div class="tool"><div class="tool-row"><span class="tool-name">threat_intel_lookup</span><span class="tool-price">$0.25</span></div><div class="tool-desc">IOC lookup against threat intel feeds</div><span class="tool-cat">Blue Team</span></div>
+        <div class="tool"><div class="tool-row"><span class="tool-name">dns_security_check</span><span class="tool-price">$0.25</span></div><div class="tool-desc">SPF, DKIM, DMARC, DNSSEC, dangling records</div><span class="tool-cat">Blue Team</span></div>
+        <div class="tool"><div class="tool-row"><span class="tool-name">email_security_audit</span><span class="tool-price">$0.50</span></div><div class="tool-desc">Comprehensive email security with hardening recommendations</div><span class="tool-cat">Blue Team</span></div>
+
+        <div class="tool"><div class="tool-row"><span class="tool-name">access_review</span><span class="tool-price">$0.50</span></div><div class="tool-desc">Audit user access against least-privilege principles</div><span class="tool-cat">Identity</span></div>
+        <div class="tool"><div class="tool-row"><span class="tool-name">mfa_audit</span><span class="tool-price">$0.25</span></div><div class="tool-desc">MFA coverage and method strength assessment</div><span class="tool-cat">Identity</span></div>
+
+        <div class="tool"><div class="tool-row"><span class="tool-name">credential_check</span><span class="tool-price">$0.50</span></div><div class="tool-desc">Check email/domain in known breach databases</div><span class="tool-cat">Offensive</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">Pricing</div>
+        <h2>Pay only for what your agent calls</h2>
+        <p>Two payment methods. Same per-call prices. No subscriptions, no monthly minimums.</p>
+      </div>
+
+      <div class="pricing-cards">
+        <div class="price-card">
+          <h3>API Key</h3>
+          <p class="desc">Best for agents you control. Set a monthly budget, get usage analytics.</p>
+          <ul class="price-features">
+            <li>Same per-call pricing as x402</li>
+            <li>Set monthly spend limits</li>
+            <li>Usage dashboard &amp; analytics</li>
+            <li>Webhooks for async scans</li>
+            <li>Top up via card or invoice</li>
+          </ul>
+          <a href="https://github.com/astafford8488/agentaegis-mcp" class="btn btn-ghost" target="_blank" rel="noopener">Sign Up</a>
+        </div>
+
+        <div class="price-card featured">
+          <span class="price-card-tag">Agent-native</span>
+          <h3>x402 Micropayment</h3>
+          <p class="desc">No signup. Your agent pays per call via USDC on Base. Pure pay-as-you-go.</p>
+          <ul class="price-features">
+            <li>No registration required</li>
+            <li>USDC on Base (mainnet)</li>
+            <li>Settlement in seconds</li>
+            <li>Standard x402 protocol</li>
+            <li>Works with any x402 client</li>
+          </ul>
+          <a href="https://github.com/astafford8488/agentaegis-mcp#payment-flow" class="btn btn-primary" target="_blank" rel="noopener">View Docs</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="integrate" class="code-section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">Integration</div>
+        <h2>Drop in. Done.</h2>
+        <p>Add AgentAegis to your MCP client in one block. Works with Claude Desktop, custom agents, n8n, LangChain, and anything that speaks MCP.</p>
+      </div>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-dot r"></span><span class="code-dot y"></span><span class="code-dot g"></span>
+          <span style="margin-left: 8px;">claude_desktop_config.json</span>
+        </div>
+<pre><span class="key">"mcpServers"</span>: {
+  <span class="key">"agentaegis"</span>: {
+    <span class="key">"command"</span>: <span class="str">"node"</span>,
+    <span class="key">"args"</span>: [<span class="str">"./agentaegis-mcp/dist/index.js"</span>],
+    <span class="key">"env"</span>: {
+      <span class="key">"AGENTAEGIS_API_KEY"</span>: <span class="str">"aegis_..."</span>
+    }
+  }
+}</pre>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2 L4 6 L4 12 C4 17 8 21 12 22 C16 21 20 17 20 12 L20 6 Z"/>
+            <path d="M9 12 L11 14 L15 10"/>
+          </svg>
+          AgentAegis
+        </a>
+        <p>Pay-per-use cybersecurity for AI agents. Built on the Model Context Protocol.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#tools">Tool Catalog</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#integrate">Integration</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="https://github.com/astafford8488/agentaegis-mcp" target="_blank" rel="noopener">GitHub</a></li>
+          <li><a href="https://github.com/astafford8488/agentaegis-mcp#readme" target="_blank" rel="noopener">Documentation</a></li>
+          <li><a href="https://modelcontextprotocol.io" target="_blank" rel="noopener">MCP Spec</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/terms.html">Terms</a></li>
+          <li><a href="/privacy.html">Privacy</a></li>
+          <li><a href="/responsible-use.html">Responsible Use</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>&copy; 2025 AgentAegis. MIT-licensed open source.</div>
+      <div>Built for the agent economy.</div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
