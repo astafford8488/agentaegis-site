@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="abuseipdb-verification" content="OkRiMxG5" />
+  <title>Code Security Audit · AgentAegis Demo</title>
+  <meta name="description" content="Three security scanners on a fictional repo. See SAST findings, hardcoded secrets, and vulnerable dependencies surfaced in seconds." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/shared/demo.css" />
+</head>
+<body>
+
+<header class="demo-header">
+  <div class="container demo-nav">
+    <a href="/" class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2 L4 6 L4 12 C4 17 8 21 12 22 C16 21 20 17 20 12 L20 6 Z"/>
+        <path d="M9 12 L11 14 L15 10"/>
+      </svg>
+      AgentAegis
+    </a>
+    <div class="demo-nav-links">
+      <a href="/demos/">All Demos</a>
+      <a href="https://github.com/astafford8488/agentaegis-mcp" target="_blank" rel="noopener">GitHub</a>
+      <a href="#" class="btn btn-primary" data-beta-signup>Get Beta Access</a>
+    </div>
+  </div>
+</header>
+
+<main class="demo-page" id="demo-root">
+  <div class="container">
+    <div class="demo-breadcrumb">
+      <a href="/demos/">Demos</a>
+      <span class="sep">/</span>
+      <span>Code Security Audit</span>
+    </div>
+
+    <h1 class="demo-title">Code Security Audit</h1>
+    <p class="demo-subtitle">
+      Three scanners running in parallel against a fictional payments-api repo. SAST, secret detection, and dependency CVE check —
+      surfaced with line numbers, redacted snippets, and exact upgrade commands.
+    </p>
+
+    <div class="scenario">
+      <div class="scenario-label">Demo Scenario</div>
+      <div class="scenario-target">github.com/quillfinance/payments-api</div>
+      <div class="scenario-meta">
+        <span class="scenario-meta-item">📦 Node.js + TypeScript monorepo</span>
+        <span class="scenario-meta-item">💳 Stripe + custom tokenization</span>
+        <span class="scenario-meta-item">🔄 1,243 files · 1,847 deps</span>
+      </div>
+    </div>
+
+    <section class="scan-area">
+      <div class="scan-status">
+        <span class="pulse"></span>
+        <span class="scan-status-text">Ready to scan</span>
+      </div>
+
+      <div class="tool-strip">
+        <div class="tool-card" data-tool="secret_scan">
+          <div class="tool-name">secret_scan</div>
+          <div class="tool-label">Secret Detection</div>
+          <svg class="tool-status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-6.2-8.6"/></svg>
+          <div class="tool-progress"><div class="tool-progress-bar"></div></div>
+        </div>
+        <div class="tool-card" data-tool="sast_scan">
+          <div class="tool-name">sast_scan</div>
+          <div class="tool-label">Static Analysis</div>
+          <svg class="tool-status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-6.2-8.6"/></svg>
+          <div class="tool-progress"><div class="tool-progress-bar"></div></div>
+        </div>
+        <div class="tool-card" data-tool="dependency_audit">
+          <div class="tool-name">dependency_audit</div>
+          <div class="tool-label">Dependency CVEs</div>
+          <svg class="tool-status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-6.2-8.6"/></svg>
+          <div class="tool-progress"><div class="tool-progress-bar"></div></div>
+        </div>
+      </div>
+
+      <div class="scan-log"></div>
+
+      <div class="scan-cta">
+        <button class="btn btn-primary btn-large btn-run">▶ Scan Repo</button>
+        <button class="btn btn-ghost btn-restart hidden">↻ Run Again</button>
+        <span class="scan-tagline">Synthetic data · ~8 seconds</span>
+      </div>
+    </section>
+
+    <section class="result-section hidden" id="result-summary"></section>
+    <section class="result-section hidden" id="result-secrets"></section>
+    <section class="result-section hidden" id="result-sast"></section>
+    <section class="result-section hidden" id="result-deps"></section>
+    <section class="result-section hidden" id="result-prompt"></section>
+
+    <section class="beta-cta hidden">
+      <h3>Audit your real repos</h3>
+      <p>Point AgentAegis at any git URL — public or private (with token). Get back exactly what you saw above, on your real code.</p>
+      <button class="btn btn-primary btn-large" data-beta-signup>Get Beta Access</button>
+    </section>
+  </div>
+</main>
+
+<footer class="demo-footer">
+  <div class="container">
+    <p><a href="/demos/">← Back to all demos</a></p>
+  </div>
+</footer>
+
+<script src="/shared/demo-engine.js"></script>
+<script>
+  const engine = new AgentAegisDemo.Engine("#demo-root", "/demos/code-audit/data.json");
+  engine.load().then(() => {
+    document.querySelector(".btn-run").addEventListener("click", () => engine.run());
+    document.querySelector(".btn-restart").addEventListener("click", () => engine.run());
+  });
+</script>
+</body>
+</html>

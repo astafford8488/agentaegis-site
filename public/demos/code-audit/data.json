@@ -1,0 +1,93 @@
+{
+  "scenario": {
+    "company": "Quill Finance",
+    "context": "Payments API monorepo. Node.js + TypeScript. Handles card data via Stripe + custom tokenization service.",
+    "target": "github.com/quillfinance/payments-api"
+  },
+  "mode": "parallel",
+  "tools": [
+    {
+      "id": "secret_scan",
+      "label": "Secret Scan (trufflehog)",
+      "duration_ms": 3800,
+      "log_lines": [
+        { "at": 0, "text": "[secret_scan] Cloning github.com/quillfinance/payments-api (depth=1)...", "kind": "tool" },
+        { "at": 600, "text": "Repo size: 47MB · 1,243 files" },
+        { "at": 900, "text": "Running trufflehog filesystem scan..." },
+        { "at": 1400, "text": "Scanning .env.production..." },
+        { "at": 1700, "text": "Detected AWS Access Key in .env.production:14", "kind": "crit" },
+        { "at": 1900, "text": "Verifying with AWS STS..." },
+        { "at": 2400, "text": "ACTIVE: AKIA****QF7M (verified, IAM user 'deploy-bot')", "kind": "crit" },
+        { "at": 2700, "text": "Scanning src/auth/jwt.ts..." },
+        { "at": 3000, "text": "Detected RSA private key in src/auth/jwt.ts:3", "kind": "crit" },
+        { "at": 3200, "text": "Scanning src/integrations/stripe.ts..." },
+        { "at": 3500, "text": "Detected Stripe live key in tests/fixtures/seed.ts:42", "kind": "warn" },
+        { "at": 3700, "text": "Scan complete: 3 secrets found, 2 verified active" }
+      ]
+    },
+    {
+      "id": "sast_scan",
+      "label": "SAST (Semgrep)",
+      "duration_ms": 4500,
+      "log_lines": [
+        { "at": 0, "text": "[sast_scan] Loading Semgrep ruleset (auto config)...", "kind": "tool" },
+        { "at": 400, "text": "Loaded 312 security rules for typescript, javascript" },
+        { "at": 1000, "text": "Scanning src/api/users.ts..." },
+        { "at": 1400, "text": "Found: tainted-sql-string in src/api/users.ts:84", "kind": "crit" },
+        { "at": 1700, "text": "Scanning src/api/payments.ts..." },
+        { "at": 2200, "text": "Found: weak-crypto-md5 in src/api/payments.ts:147", "kind": "warn" },
+        { "at": 2500, "text": "Scanning src/templates/email.ts..." },
+        { "at": 2900, "text": "Found: dangerously-set-inner-html in src/templates/email.ts:23", "kind": "warn" },
+        { "at": 3300, "text": "Scanning src/middleware/cors.ts..." },
+        { "at": 3700, "text": "Found: cors-misconfiguration in src/middleware/cors.ts:11", "kind": "warn" },
+        { "at": 4100, "text": "Scanning src/api/admin.ts..." },
+        { "at": 4400, "text": "Found: missing-auth-check in src/api/admin.ts:67", "kind": "crit" }
+      ]
+    },
+    {
+      "id": "dependency_audit",
+      "label": "Dependency Audit (trivy)",
+      "duration_ms": 4200,
+      "log_lines": [
+        { "at": 0, "text": "[dependency_audit] Reading package-lock.json...", "kind": "tool" },
+        { "at": 400, "text": "Found 1,847 dependencies (direct + transitive)" },
+        { "at": 800, "text": "Querying NVD + GitHub Advisory database..." },
+        { "at": 1500, "text": "  next@13.4.0 → CVE-2024-46982 (HIGH, cache poisoning)", "kind": "crit" },
+        { "at": 1900, "text": "  axios@0.21.1 → CVE-2023-45857 (CRITICAL, CSRF)", "kind": "crit" },
+        { "at": 2200, "text": "  jsonwebtoken@8.5.1 → CVE-2022-23529 (HIGH, RCE)", "kind": "crit" },
+        { "at": 2600, "text": "  semver@7.3.7 → CVE-2022-25883 (HIGH, ReDoS)", "kind": "warn" },
+        { "at": 2900, "text": "  ws@7.4.6 → CVE-2024-37890 (HIGH, DoS)", "kind": "warn" },
+        { "at": 3300, "text": "  follow-redirects@1.14.7 → CVE-2024-28849 (MEDIUM, info leak)" },
+        { "at": 3600, "text": "  lodash@4.17.20 → CVE-2021-23337 (HIGH, command injection)", "kind": "warn" },
+        { "at": 3900, "text": "Total: 14 vulnerabilities · 3 critical · 6 high · 5 medium" }
+      ]
+    }
+  ],
+  "reveals": [
+    {
+      "delay_ms": 200,
+      "section": "result-summary",
+      "html": "<div class=\"result-header\"><div><div class=\"result-title\">Code Security Report</div><div class=\"result-subtitle\">github.com/quillfinance/payments-api · 3 scanners · 22 findings</div></div><div class=\"grade-badge grade-D\">D</div></div><div class=\"stat-grid\"><div class=\"stat-box crit\"><div class=\"stat-box-label\">Active Secrets</div><div class=\"stat-box-value\">2</div></div><div class=\"stat-box crit\"><div class=\"stat-box-label\">Critical SAST</div><div class=\"stat-box-value\">2</div></div><div class=\"stat-box crit\"><div class=\"stat-box-label\">CVEs in Deps</div><div class=\"stat-box-value\">14</div></div><div class=\"stat-box warn\"><div class=\"stat-box-label\">Total Issues</div><div class=\"stat-box-value\">22</div></div></div><p class=\"text-muted\" style=\"margin-top:8px;font-size:14px\">⚠️ Two secrets are <strong>verified active</strong> — the AWS key has IAM access, and the RSA private key is your JWT signing key. Rotate both within the next 30 minutes.</p>"
+    },
+    {
+      "delay_ms": 400,
+      "section": "result-secrets",
+      "html": "<div class=\"result-title\" style=\"margin-bottom:16px\">🔑 Secrets exposed in repo</div><div class=\"finding\"><div class=\"finding-severity sev-critical\">Critical</div><div class=\"finding-body\"><div class=\"finding-title\">AWS Access Key — VERIFIED ACTIVE</div><div class=\"finding-desc\">Production AWS credentials committed to .env.production. Verified live via STS. IAM user is named <code>deploy-bot</code> and likely has S3 + ECS permissions.</div><div class=\"finding-meta\">.env.production:14 · committed 47 days ago · AKIA****QF7M (redacted)</div><div class=\"code-snippet\"><pre><span class=\"line\"><span class=\"key\">AWS_ACCESS_KEY_ID</span>=<span class=\"str\">AKIA****QF7M</span></span><span class=\"line bad\"><span class=\"key\">AWS_SECRET_ACCESS_KEY</span>=<span class=\"str\">****</span> <span class=\"com\"># ROTATE NOW</span></span><span class=\"line\"><span class=\"key\">AWS_REGION</span>=<span class=\"str\">us-east-1</span></span></pre></div></div><div class=\"finding-cta\">Rotate now →</div></div><div class=\"finding\"><div class=\"finding-severity sev-critical\">Critical</div><div class=\"finding-body\"><div class=\"finding-title\">JWT signing key — RSA private key in source</div><div class=\"finding-desc\">Anyone with this key can forge JWTs and impersonate any user, including admins. Rotate the key, invalidate all existing JWTs, and force re-login.</div><div class=\"finding-meta\">src/auth/jwt.ts:3 · committed 6 months ago · RSA-2048</div></div><div class=\"finding-cta\">Rotate + invalidate →</div></div><div class=\"finding\"><div class=\"finding-severity sev-high\">High</div><div class=\"finding-body\"><div class=\"finding-title\">Stripe live key in test fixtures</div><div class=\"finding-desc\">A live Stripe key is in tests/fixtures/seed.ts. If tests run against live Stripe, you're charging real cards in CI. Move to test mode keys (sk_test_*).</div><div class=\"finding-meta\">tests/fixtures/seed.ts:42 · sk_live_****dPq3</div></div><div class=\"finding-cta\">Replace with sk_test_ →</div></div>"
+    },
+    {
+      "delay_ms": 400,
+      "section": "result-sast",
+      "html": "<div class=\"result-title\" style=\"margin-bottom:16px\">🐛 Code vulnerabilities</div><div class=\"finding\"><div class=\"finding-severity sev-critical\">Critical</div><div class=\"finding-body\"><div class=\"finding-title\">Missing auth check on admin endpoint</div><div class=\"finding-desc\">/api/admin/users is registered but has no authentication middleware. Anyone with the URL can list, create, or delete users.</div><div class=\"finding-meta\">src/api/admin.ts:67 · CWE-306 · missing-auth-check</div><div class=\"code-snippet\"><pre><span class=\"line\"><span class=\"key\">router</span>.<span class=\"fn\">post</span>(<span class=\"str\">'/api/admin/users'</span>, <span class=\"key\">async</span> (req, res) => {</span><span class=\"line bad\">  <span class=\"com\">// TODO: add auth</span></span><span class=\"line bad\">  <span class=\"key\">const</span> user = <span class=\"key\">await</span> <span class=\"fn\">createUser</span>(req.body);</span><span class=\"line\">  res.<span class=\"fn\">json</span>(user);</span><span class=\"line\">});</span></pre></div></div><div class=\"finding-cta\">Add auth →</div></div><div class=\"finding\"><div class=\"finding-severity sev-critical\">Critical</div><div class=\"finding-body\"><div class=\"finding-title\">SQL injection via raw query string interpolation</div><div class=\"finding-desc\">User input is interpolated directly into SQL. Use parameterized queries or an ORM. This is the #1 OWASP issue and you'll fail any pentest with this in code.</div><div class=\"finding-meta\">src/api/users.ts:84 · CWE-89 · tainted-sql-string</div><div class=\"code-snippet\"><pre><span class=\"line\"><span class=\"key\">const</span> { email } = req.<span class=\"key\">query</span>;</span><span class=\"line bad\"><span class=\"key\">const</span> result = <span class=\"key\">await</span> db.<span class=\"fn\">query</span>(<span class=\"str\">`SELECT * FROM users WHERE email = '${email}'`</span>);</span><span class=\"line\">res.<span class=\"fn\">json</span>(result);</span></pre></div></div><div class=\"finding-cta\">Parameterize →</div></div><div class=\"finding\"><div class=\"finding-severity sev-medium\">Medium</div><div class=\"finding-body\"><div class=\"finding-title\">XSS via dangerouslySetInnerHTML in email template</div><div class=\"finding-desc\">User-provided content is rendered as HTML in transactional emails. Sanitize via DOMPurify or escape at render time.</div><div class=\"finding-meta\">src/templates/email.ts:23 · CWE-79 · dangerously-set-inner-html</div></div><div class=\"finding-cta\">Sanitize →</div></div><div class=\"finding\"><div class=\"finding-severity sev-medium\">Medium</div><div class=\"finding-body\"><div class=\"finding-title\">Permissive CORS configuration</div><div class=\"finding-desc\">CORS is set to <code>origin: \"*\"</code> with credentials enabled — browsers will refuse, but it indicates a permissive intent. Restrict to known origins.</div><div class=\"finding-meta\">src/middleware/cors.ts:11 · CWE-942 · cors-misconfiguration</div></div><div class=\"finding-cta\">Restrict origins →</div></div>"
+    },
+    {
+      "delay_ms": 400,
+      "section": "result-deps",
+      "html": "<div class=\"result-title\" style=\"margin-bottom:16px\">📦 Vulnerable dependencies</div><div class=\"finding\"><div class=\"finding-severity sev-critical\">Critical</div><div class=\"finding-body\"><div class=\"finding-title\">axios 0.21.1 → CSRF (CVE-2023-45857)</div><div class=\"finding-desc\">Cross-site request forgery in axios via cookie handling. Patched in 1.6.0+.</div><div class=\"finding-meta\">CVSS 9.1 · npm i axios@^1.7.0</div></div><div class=\"finding-cta\">Upgrade →</div></div><div class=\"finding\"><div class=\"finding-severity sev-critical\">Critical</div><div class=\"finding-body\"><div class=\"finding-title\">jsonwebtoken 8.5.1 → RCE (CVE-2022-23529)</div><div class=\"finding-desc\">Arbitrary code execution via crafted secretOrPublicKey. Patched in 9.0.0.</div><div class=\"finding-meta\">CVSS 7.6 · npm i jsonwebtoken@^9.0.2</div></div><div class=\"finding-cta\">Upgrade →</div></div><div class=\"finding\"><div class=\"finding-severity sev-high\">High</div><div class=\"finding-body\"><div class=\"finding-title\">next 13.4.0 → cache poisoning (CVE-2024-46982)</div><div class=\"finding-desc\">Crafted x-now-route-matches header allows cache poisoning. Patched in 14.2.13.</div><div class=\"finding-meta\">CVSS 7.5 · npm i next@^14.2.13</div></div><div class=\"finding-cta\">Upgrade →</div></div><p class=\"text-muted\" style=\"margin-top:14px;font-size:13px\">+ 11 more (lodash, semver, ws, follow-redirects, ...). Run <code>vuln_prioritize</code> for a full sequenced upgrade plan.</p>"
+    },
+    {
+      "delay_ms": 400,
+      "section": "result-prompt",
+      "html": "<div class=\"result-h3\">What your agent did</div><div class=\"mcp-prompt\">// Agent: \"Audit our payments-api repo for security issues\"\n\nconst [secrets, sast, deps] = await Promise.all([\n  mcp.call(\"secret_scan\", {\n    source: { type: \"git_repo\", url: \"https://github.com/quillfinance/payments-api\" },\n    include_history: false\n  }),\n  mcp.call(\"sast_scan\", {\n    source: { type: \"git_repo\", url: \"https://github.com/quillfinance/payments-api\" },\n    severity_threshold: \"warning\"\n  }),\n  mcp.call(\"dependency_audit\", {\n    source: { type: \"git_repo\", url: \"https://github.com/quillfinance/payments-api\" }\n  })\n]);\n\n// Total cost: $2.00 (secret $0.50 + sast $1.00 + dep $0.50) · ~8 seconds wall clock</div>"
+    }
+  ]
+}

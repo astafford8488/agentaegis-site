@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="abuseipdb-verification" content="OkRiMxG5" />
+  <title>SOC 2 Readiness Check · AgentAegis Demo</title>
+  <meta name="description" content="See AgentAegis assess SOC 2 readiness in seconds. Real controls, real gaps, real roadmap." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/shared/demo.css" />
+</head>
+<body>
+
+<header class="demo-header">
+  <div class="container demo-nav">
+    <a href="/" class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2 L4 6 L4 12 C4 17 8 21 12 22 C16 21 20 17 20 12 L20 6 Z"/>
+        <path d="M9 12 L11 14 L15 10"/>
+      </svg>
+      AgentAegis
+    </a>
+    <div class="demo-nav-links">
+      <a href="/demos/">All Demos</a>
+      <a href="https://github.com/astafford8488/agentaegis-mcp" target="_blank" rel="noopener">GitHub</a>
+      <a href="#" class="btn btn-primary" data-beta-signup>Get Beta Access</a>
+    </div>
+  </div>
+</header>
+
+<main class="demo-page" id="demo-root">
+  <div class="container">
+    <div class="demo-breadcrumb">
+      <a href="/demos/">Demos</a>
+      <span class="sep">/</span>
+      <span>SOC 2 Readiness Check</span>
+    </div>
+
+    <h1 class="demo-title">SOC 2 Readiness Check</h1>
+    <p class="demo-subtitle">
+      In real life this is a 4–6 week consulting engagement that costs $15–25k. Here AgentAegis runs it in 7 seconds against
+      Quill Finance's actual stack — and outputs a sequenced 90-day roadmap with effort and cost estimates.
+    </p>
+
+    <div class="scenario">
+      <div class="scenario-label">Demo Scenario</div>
+      <div class="scenario-target">Quill Finance Inc.</div>
+      <div class="scenario-meta">
+        <span class="scenario-meta-item">👥 50 employees</span>
+        <span class="scenario-meta-item">💳 Handles PII + payment cards</span>
+        <span class="scenario-meta-item">☁️ AWS</span>
+        <span class="scenario-meta-item">🔐 Okta · Datadog · GitHub</span>
+        <span class="scenario-meta-item">📋 No SOC report yet</span>
+      </div>
+    </div>
+
+    <section class="scan-area">
+      <div class="scan-status">
+        <span class="pulse"></span>
+        <span class="scan-status-text">Ready to assess</span>
+      </div>
+
+      <div class="tool-strip">
+        <div class="tool-card" data-tool="compliance_framework_check">
+          <div class="tool-name">compliance_framework_check</div>
+          <div class="tool-label">SOC 2 Assessment</div>
+          <svg class="tool-status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-6.2-8.6"/></svg>
+          <div class="tool-progress"><div class="tool-progress-bar"></div></div>
+        </div>
+        <div class="tool-card" data-tool="control_gap_analysis">
+          <div class="tool-name">control_gap_analysis</div>
+          <div class="tool-label">Gap Analysis & Roadmap</div>
+          <svg class="tool-status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-6.2-8.6"/></svg>
+          <div class="tool-progress"><div class="tool-progress-bar"></div></div>
+        </div>
+      </div>
+
+      <div class="scan-log"></div>
+
+      <div class="scan-cta">
+        <button class="btn btn-primary btn-large btn-run">▶ Run Assessment</button>
+        <button class="btn btn-ghost btn-restart hidden">↻ Run Again</button>
+        <span class="scan-tagline">Synthetic data · ~7 seconds</span>
+      </div>
+    </section>
+
+    <section class="result-section hidden" id="result-summary"></section>
+    <section class="result-section hidden" id="result-gaps"></section>
+    <section class="result-section hidden" id="result-roadmap"></section>
+    <section class="result-section hidden" id="result-prompt"></section>
+
+    <section class="beta-cta hidden">
+      <h3>Run this on your own organization</h3>
+      <p>Plug in your real stack, get a real roadmap. AgentAegis is in private beta — get on the list and we'll let you know when public access opens.</p>
+      <button class="btn btn-primary btn-large" data-beta-signup>Get Beta Access</button>
+    </section>
+  </div>
+</main>
+
+<footer class="demo-footer">
+  <div class="container">
+    <p><a href="/demos/">← Back to all demos</a></p>
+  </div>
+</footer>
+
+<script src="/shared/demo-engine.js"></script>
+<script>
+  const engine = new AgentAegisDemo.Engine("#demo-root", "/demos/soc2-readiness/data.json");
+  engine.load().then(() => {
+    document.querySelector(".btn-run").addEventListener("click", () => engine.run());
+    document.querySelector(".btn-restart").addEventListener("click", () => engine.run());
+  });
+</script>
+</body>
+</html>

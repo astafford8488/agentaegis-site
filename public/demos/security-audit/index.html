@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="abuseipdb-verification" content="OkRiMxG5" />
+  <title>90-Second Security Audit · AgentAegis Demo</title>
+  <meta name="description" content="Watch AgentAegis audit a fictional fintech's external security posture — SSL, DNS, email, and breach exposure — in under 10 seconds." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/shared/demo.css" />
+</head>
+<body>
+
+<header class="demo-header">
+  <div class="container demo-nav">
+    <a href="/" class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2 L4 6 L4 12 C4 17 8 21 12 22 C16 21 20 17 20 12 L20 6 Z"/>
+        <path d="M9 12 L11 14 L15 10"/>
+      </svg>
+      AgentAegis
+    </a>
+    <div class="demo-nav-links">
+      <a href="/demos/">All Demos</a>
+      <a href="https://github.com/astafford8488/agentaegis-mcp" target="_blank" rel="noopener">GitHub</a>
+      <a href="#" class="btn btn-primary" data-beta-signup>Get Beta Access</a>
+    </div>
+  </div>
+</header>
+
+<main class="demo-page" id="demo-root">
+  <div class="container">
+    <div class="demo-breadcrumb">
+      <a href="/demos/">Demos</a>
+      <span class="sep">/</span>
+      <span>90-Second Security Audit</span>
+    </div>
+
+    <h1 class="demo-title">90-Second Security Audit</h1>
+    <p class="demo-subtitle">
+      Drop a domain, get a full external posture report. SSL config, DNS hygiene, email security,
+      and team breach exposure — combined into one card. This is what an AI agent can do in one prompt.
+    </p>
+
+    <div class="scenario">
+      <div class="scenario-label">Demo Scenario</div>
+      <div class="scenario-target">demo.quillfinance.io</div>
+      <div class="scenario-meta">
+        <span class="scenario-meta-item">🏢 Quill Finance · B2B fintech</span>
+        <span class="scenario-meta-item">💳 Payment processing API</span>
+        <span class="scenario-meta-item">📊 PCI DSS scope</span>
+      </div>
+    </div>
+
+    <section class="scan-area">
+      <div class="scan-status">
+        <span class="pulse"></span>
+        <span class="scan-status-text">Ready to run</span>
+      </div>
+
+      <div class="tool-strip">
+        <div class="tool-card" data-tool="ssl_tls_audit">
+          <div class="tool-name">ssl_tls_audit</div>
+          <div class="tool-label">SSL/TLS Audit</div>
+          <svg class="tool-status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-6.2-8.6"/></svg>
+          <div class="tool-progress"><div class="tool-progress-bar"></div></div>
+        </div>
+        <div class="tool-card" data-tool="dns_security_check">
+          <div class="tool-name">dns_security_check</div>
+          <div class="tool-label">DNS Security</div>
+          <svg class="tool-status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-6.2-8.6"/></svg>
+          <div class="tool-progress"><div class="tool-progress-bar"></div></div>
+        </div>
+        <div class="tool-card" data-tool="email_security_audit">
+          <div class="tool-name">email_security_audit</div>
+          <div class="tool-label">Email Security</div>
+          <svg class="tool-status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-6.2-8.6"/></svg>
+          <div class="tool-progress"><div class="tool-progress-bar"></div></div>
+        </div>
+        <div class="tool-card" data-tool="credential_check">
+          <div class="tool-name">credential_check</div>
+          <div class="tool-label">Breach Exposure</div>
+          <svg class="tool-status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-6.2-8.6"/></svg>
+          <div class="tool-progress"><div class="tool-progress-bar"></div></div>
+        </div>
+      </div>
+
+      <div class="scan-log"></div>
+
+      <div class="scan-cta">
+        <button class="btn btn-primary btn-large btn-run">▶ Run Audit</button>
+        <button class="btn btn-ghost btn-restart hidden">↻ Run Again</button>
+        <span class="scan-tagline">Synthetic data · ~6 seconds</span>
+      </div>
+    </section>
+
+    <section class="result-section hidden" id="result-summary"></section>
+    <section class="result-section hidden" id="result-findings"></section>
+    <section class="result-section hidden" id="result-prompt"></section>
+
+    <section class="beta-cta hidden">
+      <h3>Want to run this on your own domain?</h3>
+      <p>AgentAegis is in private beta. Get an API key and integrate the tools your agent needs — pay per call, no subscription.</p>
+      <button class="btn btn-primary btn-large" data-beta-signup>Get Beta Access</button>
+    </section>
+  </div>
+</main>
+
+<footer class="demo-footer">
+  <div class="container">
+    <p><a href="/demos/">← Back to all demos</a></p>
+  </div>
+</footer>
+
+<script src="/shared/demo-engine.js"></script>
+<script>
+  const engine = new AgentAegisDemo.Engine("#demo-root", "/demos/security-audit/data.json");
+  engine.load().then(() => {
+    document.querySelector(".btn-run").addEventListener("click", () => engine.run());
+    document.querySelector(".btn-restart").addEventListener("click", () => engine.run());
+  });
+</script>
+</body>
+</html>

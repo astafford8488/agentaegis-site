@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="abuseipdb-verification" content="OkRiMxG5" />
+  <title>AgentAegis Demos — See cybersecurity tools running on synthetic data</title>
+  <meta name="description" content="Six interactive demos showing AgentAegis in action against a fictional fintech, Quill Finance. Realistic findings, full reports, no signup required." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/shared/demo.css" />
+</head>
+<body>
+
+<header class="demo-header">
+  <div class="container demo-nav">
+    <a href="/" class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2 L4 6 L4 12 C4 17 8 21 12 22 C16 21 20 17 20 12 L20 6 Z"/>
+        <path d="M9 12 L11 14 L15 10"/>
+      </svg>
+      AgentAegis
+    </a>
+    <div class="demo-nav-links">
+      <a href="/#tools">Tools</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/demos/">Demos</a>
+      <a href="https://github.com/astafford8488/agentaegis-mcp" target="_blank" rel="noopener">GitHub</a>
+      <a href="#" class="btn btn-primary" data-beta-signup>Get Beta Access</a>
+    </div>
+  </div>
+</header>
+
+<main class="demo-page">
+  <div class="container">
+    <div class="demo-tag">
+      <span class="demo-tag-dot"></span>
+      Interactive demos · No signup required
+    </div>
+    <h1 class="demo-title">See AgentAegis in action.</h1>
+    <p class="demo-subtitle">
+      Six guided demos against <strong>Quill Finance</strong>, a fictional fintech we use for safe testing.
+      Each demo runs the actual MCP tool flow with synthetic data — you see exactly what your agent would see.
+    </p>
+
+    <div class="gallery-grid">
+
+      <a href="/demos/security-audit/" class="gallery-card">
+        <div class="gallery-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>90-Second Security Audit</h3>
+        <p>Drop in a domain, get a full external posture report. SSL, DNS, email security, and breach exposure — all in one card.</p>
+        <div class="gallery-tools">
+          <span class="gallery-tool">ssl_tls_audit</span>
+          <span class="gallery-tool">dns_security_check</span>
+          <span class="gallery-tool">email_security_audit</span>
+          <span class="gallery-tool">credential_check</span>
+        </div>
+        <div class="gallery-meta">
+          <span>~6s replay · 4 tools</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="/demos/soc2-readiness/" class="gallery-card">
+        <div class="gallery-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><polyline points="9 15 11 17 15 13"/></svg>
+        </div>
+        <h3>SOC 2 Readiness Check</h3>
+        <p>Pre-filled assessment of Quill Finance's controls. See readiness score, critical gaps, and a prioritized 90-day roadmap with cost estimates.</p>
+        <div class="gallery-tools">
+          <span class="gallery-tool">compliance_framework_check</span>
+          <span class="gallery-tool">control_gap_analysis</span>
+        </div>
+        <div class="gallery-meta">
+          <span>~7s replay · 2 tools</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="/demos/code-audit/" class="gallery-card">
+        <div class="gallery-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <h3>Code Security Audit</h3>
+        <p>Three scanners on a fake repo. Hardcoded AWS keys, SQL injection, vulnerable dependencies — all surfaced with exact line numbers and fixes.</p>
+        <div class="gallery-tools">
+          <span class="gallery-tool">sast_scan</span>
+          <span class="gallery-tool">secret_scan</span>
+          <span class="gallery-tool">dependency_audit</span>
+        </div>
+        <div class="gallery-meta">
+          <span>~8s replay · 3 tools</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="/demos/incident-triage/" class="gallery-card">
+        <div class="gallery-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h3>Incident Triage</h3>
+        <p>3am brute-force attack on Quill Finance's admin account. Watch AgentAegis classify, enrich with threat intel, and generate a containment plan.</p>
+        <div class="gallery-tools">
+          <span class="gallery-tool">incident_triage</span>
+          <span class="gallery-tool">threat_intel_lookup</span>
+          <span class="gallery-tool">credential_check</span>
+        </div>
+        <div class="gallery-meta">
+          <span>~5s replay · 3 tools</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="/demos/policy-generator/" class="gallery-card">
+        <div class="gallery-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <h3>Policy Generator</h3>
+        <p>Pick a policy type and organization profile. Watch a tailored, audit-ready security policy render section-by-section. Fully interactive — try your own inputs.</p>
+        <div class="gallery-tools">
+          <span class="gallery-tool">policy_generate</span>
+        </div>
+        <div class="gallery-meta">
+          <span>Interactive · 1 tool</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="/demos/network-pentest/" class="gallery-card">
+        <div class="gallery-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <h3>Network Pen Test</h3>
+        <p>Full nmap scan of Quill Finance's edge infrastructure plus Nuclei web app scan. See open ports, exposed services, and CVE matches with risk-adjusted prioritization.</p>
+        <div class="gallery-tools">
+          <span class="gallery-tool">vuln_scan_network</span>
+          <span class="gallery-tool">vuln_scan_web_app</span>
+          <span class="gallery-tool">vuln_prioritize</span>
+        </div>
+        <div class="gallery-meta">
+          <span>~10s replay · 3 tools</span>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</main>
+
+<footer class="demo-footer">
+  <div class="container">
+    <p>
+      Want to run these tools against your own systems?
+      <a href="#" data-beta-signup>Get beta access</a> · <a href="https://github.com/astafford8488/agentaegis-mcp" target="_blank" rel="noopener">View on GitHub</a>
+    </p>
+  </div>
+</footer>
+
+<script src="/shared/demo-engine.js"></script>
+</body>
+</html>

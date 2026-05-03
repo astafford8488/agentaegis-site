@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="abuseipdb-verification" content="OkRiMxG5" />
+  <title>Policy Generator · AgentAegis Demo</title>
+  <meta name="description" content="Generate audit-ready security policies tailored to your organization in seconds. Try different policy types and watch the document render section by section." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/shared/demo.css" />
+  <style>
+    .policy-form-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px; margin-bottom: 20px;
+    }
+    .form-field { display: flex; flex-direction: column; gap: 6px; }
+    .form-field label {
+      font-size: 12px; color: var(--text-muted);
+      letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600;
+    }
+    .form-field select, .form-field input {
+      background: var(--bg); border: 1px solid var(--border-strong);
+      color: var(--text); font-family: inherit; font-size: 14px;
+      padding: 10px 12px; border-radius: 8px;
+    }
+    .form-field select:focus, .form-field input:focus {
+      outline: none; border-color: var(--primary);
+    }
+    .policy-doc {
+      background: #fafbfd;
+      color: #1a1f2e;
+      border-radius: 14px; padding: 48px 56px;
+      font-size: 14px; line-height: 1.6;
+      max-width: 760px; margin: 0 auto;
+    }
+    .policy-doc h1 {
+      color: #0a1f4a; font-size: 26px; font-weight: 800;
+      letter-spacing: -0.01em; margin-bottom: 4px;
+    }
+    .policy-doc .doc-meta {
+      color: #5a6480; font-size: 12px; margin-bottom: 28px;
+      padding-bottom: 16px; border-bottom: 1px solid #e0e4eb;
+    }
+    .policy-doc h2 {
+      color: #0a1f4a; font-size: 18px; font-weight: 700;
+      margin: 24px 0 12px; opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.4s, transform 0.4s;
+    }
+    .policy-doc h2.shown { opacity: 1; transform: translateY(0); }
+    .policy-doc p, .policy-doc li {
+      color: #2a3450; font-size: 14px;
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .policy-doc p.shown, .policy-doc li.shown { opacity: 1; }
+    .policy-doc ul { margin: 8px 0 8px 24px; }
+    .policy-doc li { margin-bottom: 6px; }
+    .policy-doc strong { color: #0a1f4a; font-weight: 600; }
+
+    .doc-section { margin-bottom: 8px; }
+    .typing-cursor {
+      display: inline-block; width: 8px; height: 14px;
+      background: var(--primary); margin-left: 2px;
+      animation: blink 0.8s infinite;
+      vertical-align: text-bottom;
+    }
+    @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+
+    .policy-actions {
+      display: flex; gap: 12px; justify-content: center;
+      margin-top: 24px; flex-wrap: wrap;
+    }
+    .form-row {
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 16px; align-items: end;
+    }
+    @media (max-width: 720px) {
+      .form-row { grid-template-columns: 1fr; }
+      .policy-doc { padding: 28px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="demo-header">
+  <div class="container demo-nav">
+    <a href="/" class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2 L4 6 L4 12 C4 17 8 21 12 22 C16 21 20 17 20 12 L20 6 Z"/>
+        <path d="M9 12 L11 14 L15 10"/>
+      </svg>
+      AgentAegis
+    </a>
+    <div class="demo-nav-links">
+      <a href="/demos/">All Demos</a>
+      <a href="https://github.com/astafford8488/agentaegis-mcp" target="_blank" rel="noopener">GitHub</a>
+      <a href="#" class="btn btn-primary" data-beta-signup>Get Beta Access</a>
+    </div>
+  </div>
+</header>
+
+<main class="demo-page">
+  <div class="container">
+    <div class="demo-breadcrumb">
+      <a href="/demos/">Demos</a>
+      <span class="sep">/</span>
+      <span>Policy Generator</span>
+    </div>
+
+    <h1 class="demo-title">Policy Generator</h1>
+    <p class="demo-subtitle">
+      The only interactive demo — change the inputs and re-run. Generates audit-ready security policies tailored to your
+      organization size, industry, and compliance frameworks. Output is real-time markdown rendered as a styled document.
+    </p>
+
+    <section class="scan-area">
+      <div class="policy-form-grid">
+        <div class="form-field">
+          <label for="policy-type">Policy Type</label>
+          <select id="policy-type">
+            <option value="incident_response">Incident Response</option>
+            <option value="acceptable_use">Acceptable Use</option>
+            <option value="access_control">Access Control</option>
+            <option value="data_classification">Data Classification</option>
+            <option value="change_management">Change Management</option>
+            <option value="vendor_management">Vendor Management</option>
+            <option value="encryption">Encryption</option>
+            <option value="business_continuity">Business Continuity</option>
+            <option value="remote_work">Remote Work</option>
+            <option value="byod">BYOD</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="org-name">Organization Name</label>
+          <input id="org-name" type="text" value="Quill Finance" />
+        </div>
+        <div class="form-field">
+          <label for="org-size">Org Size</label>
+          <select id="org-size">
+            <option value="small">Small (&lt;50)</option>
+            <option value="medium" selected>Medium (50–250)</option>
+            <option value="large">Large (250+)</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="industry">Industry</label>
+          <select id="industry">
+            <option value="saas">B2B SaaS</option>
+            <option value="fintech" selected>Fintech</option>
+            <option value="healthcare">Healthcare</option>
+            <option value="ecommerce">E-commerce</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label for="frameworks">Frameworks</label>
+          <select id="frameworks">
+            <option value="soc2">SOC 2</option>
+            <option value="iso27001">ISO 27001</option>
+            <option value="hipaa">HIPAA</option>
+            <option value="pci">PCI DSS</option>
+            <option value="soc2,pci" selected>SOC 2 + PCI DSS</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="scan-cta">
+        <button class="btn btn-primary btn-large" id="generate-btn">▶ Generate Policy</button>
+        <span class="scan-tagline">Live generation · adjust inputs anytime</span>
+      </div>
+    </section>
+
+    <section class="result-section hidden" id="result-doc" style="background:transparent;border:none;padding:32px 0">
+      <div class="policy-doc" id="policy-output"></div>
+      <div class="policy-actions">
+        <button class="btn btn-ghost" id="copy-btn">📋 Copy as Markdown</button>
+        <button class="btn btn-ghost" id="download-btn">⬇ Download .md</button>
+      </div>
+    </section>
+
+    <section class="result-section hidden" id="result-prompt"></section>
+
+    <section class="beta-cta hidden">
+      <h3>Generate the rest of your policy library</h3>
+      <p>One agent prompt → 10 audit-ready policies. Customized to your stack, your industry, your compliance frameworks. AgentAegis is in private beta — get on the list.</p>
+      <button class="btn btn-primary btn-large" data-beta-signup>Get Beta Access</button>
+    </section>
+  </div>
+</main>
+
+<footer class="demo-footer">
+  <div class="container">
+    <p><a href="/demos/">← Back to all demos</a></p>
+  </div>
+</footer>
+
+<script src="/shared/demo-engine.js"></script>
+<script src="/demos/policy-generator/templates.js"></script>
+<script>
+  const $ = (sel) => document.querySelector(sel);
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  const policyOutput = $("#policy-output");
+  const resultDoc = $("#result-doc");
+  const resultPrompt = $("#result-prompt");
+  const betaCta = document.querySelector(".beta-cta");
+
+  function gather() {
+    return {
+      policy_type: $("#policy-type").value,
+      organization_name: $("#org-name").value || "Your Company",
+      org_size: $("#org-size").value,
+      industry: $("#industry").value,
+      frameworks: $("#frameworks").value.split(","),
+    };
+  }
+
+  async function generate() {
+    const cfg = gather();
+    const policy = window.AgentAegisPolicies.generate(cfg);
+
+    // Show output area
+    resultDoc.classList.remove("hidden");
+    resultDoc.classList.add("visible");
+    resultPrompt.classList.add("hidden");
+    betaCta.classList.add("hidden");
+
+    // Render with progressive reveal
+    policyOutput.innerHTML = `
+      <h1>${policy.title}</h1>
+      <div class="doc-meta">
+        Effective: ${policy.metadata.effective_date} · Owner: ${policy.metadata.owner} · Version ${policy.metadata.version}<br/>
+        Frameworks: ${policy.metadata.applicable_frameworks.join(", ").toUpperCase()}
+      </div>
+      <div id="doc-body"></div>
+    `;
+    const body = $("#doc-body");
+
+    for (const section of policy.sections) {
+      const h2 = document.createElement("h2");
+      h2.textContent = section.heading;
+      body.appendChild(h2);
+      await sleep(50);
+      h2.classList.add("shown");
+      await sleep(180);
+
+      if (section.content) {
+        const p = document.createElement("p");
+        p.innerHTML = section.content;
+        body.appendChild(p);
+        await sleep(50);
+        p.classList.add("shown");
+        await sleep(120);
+      }
+
+      if (section.sub_items?.length) {
+        const ul = document.createElement("ul");
+        body.appendChild(ul);
+        for (const item of section.sub_items) {
+          const li = document.createElement("li");
+          li.innerHTML = item;
+          ul.appendChild(li);
+          await sleep(50);
+          li.classList.add("shown");
+          await sleep(70);
+        }
+      }
+    }
+
+    // Show prompt and CTA
+    await sleep(300);
+    resultPrompt.innerHTML = `
+      <div class="result-h3">What your agent did</div>
+      <div class="mcp-prompt">// Agent: "Generate an ${cfg.policy_type.replace(/_/g, " ")} policy for ${cfg.organization_name}"
+
+await mcp.call("policy_generate", {
+  policy_type: "${cfg.policy_type}",
+  organization_name: "${cfg.organization_name}",
+  industry: "${cfg.industry}",
+  employee_count: ${cfg.org_size === "small" ? 25 : cfg.org_size === "medium" ? 100 : 500},
+  frameworks: ${JSON.stringify(cfg.frameworks)},
+  customizations: {
+    remote_workforce: true,
+    cloud_first: true
+  }
+});
+
+// Cost: $0.50 · Output: full markdown policy with metadata + sections</div>
+    `;
+    resultPrompt.classList.remove("hidden");
+    requestAnimationFrame(() => resultPrompt.classList.add("visible"));
+
+    await sleep(300);
+    betaCta.classList.remove("hidden");
+    betaCta.classList.add("visible");
+  }
+
+  $("#generate-btn").addEventListener("click", generate);
+
+  $("#copy-btn").addEventListener("click", () => {
+    const cfg = gather();
+    const policy = window.AgentAegisPolicies.generate(cfg);
+    const md = window.AgentAegisPolicies.toMarkdown(policy);
+    navigator.clipboard.writeText(md);
+    const btn = $("#copy-btn");
+    const original = btn.textContent;
+    btn.textContent = "✓ Copied";
+    setTimeout(() => { btn.textContent = original; }, 1600);
+  });
+
+  $("#download-btn").addEventListener("click", () => {
+    const cfg = gather();
+    const policy = window.AgentAegisPolicies.generate(cfg);
+    const md = window.AgentAegisPolicies.toMarkdown(policy);
+    const blob = new Blob([md], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${cfg.policy_type}-policy.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  // Auto-generate on first load to give visitor instant context
+  setTimeout(generate, 200);
+</script>
+</body>
+</html>

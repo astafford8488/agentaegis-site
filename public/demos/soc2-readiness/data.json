@@ -1,0 +1,72 @@
+{
+  "scenario": {
+    "company": "Quill Finance",
+    "context": "50 employees, B2B fintech, AWS + GitHub + Okta + Datadog stack, no SOC 2 yet, targeting Type II in 6 months."
+  },
+  "mode": "sequential",
+  "tools": [
+    {
+      "id": "compliance_framework_check",
+      "label": "SOC 2 Assessment",
+      "duration_ms": 4500,
+      "log_lines": [
+        { "at": 0, "text": "[compliance_framework_check] Loading SOC 2 Type II Trust Services Criteria...", "kind": "tool" },
+        { "at": 300, "text": "Loaded 35 controls across 5 categories" },
+        { "at": 700, "text": "Evaluating CC1 — Control Environment (5 controls)..." },
+        { "at": 1100, "text": "  CC1.1 Integrity & Ethical Values → PARTIAL", "kind": "warn" },
+        { "at": 1300, "text": "  CC1.4 Commitment to Competence → PARTIAL", "kind": "warn" },
+        { "at": 1500, "text": "Evaluating CC6 — Logical & Physical Access (8 controls)..." },
+        { "at": 1900, "text": "  CC6.1 Logical Access (Okta detected) → PARTIAL", "kind": "warn" },
+        { "at": 2100, "text": "  CC6.5 Termination procedures → NOT MET", "kind": "crit" },
+        { "at": 2300, "text": "  CC6.6 Boundary protection → PARTIAL", "kind": "warn" },
+        { "at": 2500, "text": "Evaluating CC7 — System Operations (4 controls)..." },
+        { "at": 2700, "text": "  CC7.1 Detection (Datadog detected) → PARTIAL", "kind": "warn" },
+        { "at": 2900, "text": "  CC7.2 Incident Response → NOT MET", "kind": "crit" },
+        { "at": 3100, "text": "Evaluating CC8 — Change Management (1 control)..." },
+        { "at": 3300, "text": "  CC8.1 Change management (GitHub detected) → PARTIAL", "kind": "warn" },
+        { "at": 3500, "text": "Evaluating CC9 — Risk Mitigation (2 controls)..." },
+        { "at": 3700, "text": "  CC9.1 Risk mitigation → NOT MET", "kind": "crit" },
+        { "at": 3900, "text": "Evaluating Availability (3 controls), Confidentiality (2 controls)..." },
+        { "at": 4200, "text": "Assessment complete. Computing readiness score..." },
+        { "at": 4400, "text": "Readiness score: 58% — moderate gaps", "kind": "warn" }
+      ]
+    },
+    {
+      "id": "control_gap_analysis",
+      "label": "Gap Analysis & Roadmap",
+      "duration_ms": 3200,
+      "log_lines": [
+        { "at": 0, "text": "[control_gap_analysis] Building remediation roadmap...", "kind": "tool" },
+        { "at": 400, "text": "Analyzing 9 critical/high gaps for effort, cost, dependencies" },
+        { "at": 900, "text": "Looking up tool recommendations from playbook database..." },
+        { "at": 1500, "text": "Computing dependency graph (CC7.2 depends on CC7.1, etc.)" },
+        { "at": 2000, "text": "Identified 3 quick wins (<1 week, <$1k each)" },
+        { "at": 2400, "text": "Estimating total effort: ~340 hours over 6 months" },
+        { "at": 2800, "text": "Estimating total cost: $18k–$42k (tooling + labor)" },
+        { "at": 3100, "text": "Roadmap ready: 9 actions, sequenced by dependency" }
+      ]
+    }
+  ],
+  "reveals": [
+    {
+      "delay_ms": 200,
+      "section": "result-summary",
+      "html": "<div class=\"result-header\"><div><div class=\"result-title\">SOC 2 Type II Readiness Report</div><div class=\"result-subtitle\">Quill Finance · 50 employees · Target: Type II audit in 6 months</div></div><div class=\"grade-badge grade-C\">58%</div></div><div class=\"stat-grid\"><div class=\"stat-box ok\"><div class=\"stat-box-label\">Met</div><div class=\"stat-box-value\">9</div></div><div class=\"stat-box warn\"><div class=\"stat-box-label\">Partial</div><div class=\"stat-box-value\">14</div></div><div class=\"stat-box crit\"><div class=\"stat-box-label\">Not Met</div><div class=\"stat-box-value\">8</div></div><div class=\"stat-box\"><div class=\"stat-box-label\">N/A</div><div class=\"stat-box-value\">4</div></div></div><p class=\"text-muted\" style=\"margin-top:8px;font-size:14px\">Quill Finance has the foundation (Okta + Datadog + GitHub) but is missing formal processes and several access controls. Estimated 4–6 months of focused work to reach audit-ready state.</p>"
+    },
+    {
+      "delay_ms": 400,
+      "section": "result-gaps",
+      "html": "<div class=\"result-title\" style=\"margin-bottom:16px\">Critical gaps requiring immediate attention</div><div class=\"finding\"><div class=\"finding-severity sev-critical\">P0</div><div class=\"finding-body\"><div class=\"finding-title\">CC6.5 — Access deprovisioning is manual and inconsistent</div><div class=\"finding-desc\">Okta is in place but offboarding requires 4 manual steps across IT, HR, and Engineering. We found 3 terminated employees with active GitHub access in the last 90 days.</div><div class=\"finding-meta\">Effort: 24h · Cost: $0–$2k · Tools: Okta Workflows + offboarding runbook</div></div><div class=\"finding-cta\">Fix in 2 weeks →</div></div><div class=\"finding\"><div class=\"finding-severity sev-critical\">P0</div><div class=\"finding-body\"><div class=\"finding-title\">CC7.2 — No formal incident response plan</div><div class=\"finding-desc\">Datadog alerts exist but there's no documented IRP, no on-call rotation for security incidents, and no tabletop exercises run. Auditors will fail this control immediately.</div><div class=\"finding-meta\">Effort: 32h · Cost: $0–$5k · Tools: PagerDuty + IRP template (use AgentAegis policy_generate)</div></div><div class=\"finding-cta\">Generate plan →</div></div><div class=\"finding\"><div class=\"finding-severity sev-critical\">P0</div><div class=\"finding-body\"><div class=\"finding-title\">CC9.1 — No documented vulnerability management program</div><div class=\"finding-desc\">No regular vuln scanning, no patch SLAs, no risk register. Required for Type II.</div><div class=\"finding-meta\">Effort: 40h · Cost: $5k–$12k · Tools: Snyk or AgentAegis vuln scanning + policy</div></div><div class=\"finding-cta\">Roadmap →</div></div><div class=\"finding\"><div class=\"finding-severity sev-high\">P1</div><div class=\"finding-body\"><div class=\"finding-title\">CC1.1 — No code of conduct or ethics training</div><div class=\"finding-desc\">No security awareness training program. KnowBe4 or similar required. Annual training records needed for audit.</div><div class=\"finding-meta\">Effort: 16h · Cost: $1k–$3k/yr · Tools: KnowBe4 or Hoxhunt</div></div><div class=\"finding-cta\">Quick win →</div></div><div class=\"finding\"><div class=\"finding-severity sev-high\">P1</div><div class=\"finding-body\"><div class=\"finding-title\">CC3.1 — No annual risk assessment on file</div><div class=\"finding-desc\">No formal risk register, no documented risk tolerance, no BIA. Requires a structured assessment, not just a vuln scan.</div><div class=\"finding-meta\">Effort: 40h · Cost: $0–$8k · Tools: Vanta/Drata workflow OR consultant</div></div><div class=\"finding-cta\">Roadmap →</div></div><div class=\"finding\"><div class=\"finding-severity sev-medium\">P2</div><div class=\"finding-body\"><div class=\"finding-title\">A1.2 — Backup procedures undocumented</div><div class=\"finding-desc\">RDS automated backups are running but no documented RPO/RTO targets, no quarterly restore tests on file.</div><div class=\"finding-meta\">Effort: 16h · Cost: $0 · Tools: existing AWS Backup + runbook</div></div><div class=\"finding-cta\">Document →</div></div>"
+    },
+    {
+      "delay_ms": 400,
+      "section": "result-roadmap",
+      "html": "<div class=\"result-h3\">90-day roadmap</div><div class=\"result-title\" style=\"font-size:16px;margin-bottom:14px\">Sequenced by dependency · 3 quick wins first</div><table style=\"width:100%;border-collapse:collapse;font-size:13.5px\"><thead><tr style=\"text-align:left;color:var(--text-muted);font-size:11px;letter-spacing:0.06em;text-transform:uppercase\"><th style=\"padding:10px 0;border-bottom:1px solid var(--border)\">Week</th><th style=\"padding:10px 0;border-bottom:1px solid var(--border)\">Action</th><th style=\"padding:10px 0;border-bottom:1px solid var(--border)\">Effort</th><th style=\"padding:10px 0;border-bottom:1px solid var(--border)\">Cost</th></tr></thead><tbody><tr><td style=\"padding:10px 0;border-bottom:1px solid var(--border);color:var(--accent)\">1–2</td><td style=\"padding:10px 0;border-bottom:1px solid var(--border)\"><strong>Quick wins:</strong> document offboarding runbook, generate IRP, enable security awareness training</td><td style=\"padding:10px 0;border-bottom:1px solid var(--border)\">~72h</td><td style=\"padding:10px 0;border-bottom:1px solid var(--border)\">$2k</td></tr><tr><td style=\"padding:10px 0;border-bottom:1px solid var(--border)\">3–6</td><td style=\"padding:10px 0;border-bottom:1px solid var(--border)\">Implement vuln management program (CC9.1), formalize change management (CC8.1)</td><td style=\"padding:10px 0;border-bottom:1px solid var(--border)\">~80h</td><td style=\"padding:10px 0;border-bottom:1px solid var(--border)\">$8k</td></tr><tr><td style=\"padding:10px 0;border-bottom:1px solid var(--border)\">7–9</td><td style=\"padding:10px 0;border-bottom:1px solid var(--border)\">Annual risk assessment (CC3.1), policy framework (8 policies via policy_generate)</td><td style=\"padding:10px 0;border-bottom:1px solid var(--border)\">~96h</td><td style=\"padding:10px 0;border-bottom:1px solid var(--border)\">$8k</td></tr><tr><td style=\"padding:10px 0;border-bottom:1px solid var(--border)\">10–12</td><td style=\"padding:10px 0;border-bottom:1px solid var(--border)\">Backup/DR testing, vendor management process, board reporting cadence</td><td style=\"padding:10px 0;border-bottom:1px solid var(--border)\">~64h</td><td style=\"padding:10px 0;border-bottom:1px solid var(--border)\">$4k</td></tr><tr><td style=\"padding:10px 0\">13+</td><td style=\"padding:10px 0\">Type II observation period begins. Engage auditor (Q3).</td><td style=\"padding:10px 0\">—</td><td style=\"padding:10px 0\">$15k–$25k</td></tr></tbody></table><p class=\"text-muted\" style=\"margin-top:14px;font-size:13px\"><strong>Estimated readiness in 90 days:</strong> 87% (up from 58%). <strong>Total cost:</strong> $22k–$47k including audit.</p>"
+    },
+    {
+      "delay_ms": 400,
+      "section": "result-prompt",
+      "html": "<div class=\"result-h3\">What your agent did</div><div class=\"mcp-prompt\">// Agent: \"Run a SOC 2 readiness assessment on Quill Finance and give us a roadmap\"\n\nconst assessment = await mcp.call(\"compliance_framework_check\", {\n  framework: \"soc2\",\n  organization_profile: {\n    industry: \"fintech\",\n    employee_count: 50,\n    handles_pii: true,\n    handles_payment_cards: true,\n    cloud_providers: [\"aws\"],\n    has_soc_report: false,\n    has_pentest: true,\n    has_security_team: true,\n    tools_in_use: [\"okta\", \"datadog\", \"github\", \"aws backup\"]\n  }\n});\n\nconst roadmap = await mcp.call(\"control_gap_analysis\", {\n  framework: \"soc2\",\n  failing_controls: assessment.evaluations.filter(e => e.status !== \"met\"),\n  budget_constraint: \"medium\",\n  timeline_constraint: \"6_months\"\n});\n\n// Total cost: $1.00 (framework_check $0.50 + gap_analysis $0.50)</div>"
+    }
+  ]
+}

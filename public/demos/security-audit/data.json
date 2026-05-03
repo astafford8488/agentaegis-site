@@ -1,0 +1,94 @@
+{
+  "scenario": {
+    "company": "Quill Finance",
+    "context": "B2B fintech — payment processing API. Customer-facing dashboard handles payment cards (PCI scope).",
+    "target": "demo.quillfinance.io"
+  },
+  "mode": "parallel",
+  "tools": [
+    {
+      "id": "ssl_tls_audit",
+      "label": "SSL/TLS Audit",
+      "duration_ms": 4200,
+      "log_lines": [
+        { "at": 0, "text": "[ssl_tls_audit] Resolving demo.quillfinance.io...", "kind": "tool" },
+        { "at": 320, "text": "Connected to 198.51.100.42:443" },
+        { "at": 800, "text": "TLS handshake — negotiating protocols..." },
+        { "at": 1200, "text": "Server accepts: TLS 1.0, TLS 1.1, TLS 1.2, TLS 1.3" },
+        { "at": 1300, "text": "TLS 1.0 enabled (deprecated, PCI 4.0 violation)", "kind": "warn" },
+        { "at": 1900, "text": "Probing 142 cipher suites..." },
+        { "at": 2400, "text": "Certificate chain: Let's Encrypt → ISRG Root X1 (valid)" },
+        { "at": 2800, "text": "Certificate expires in 12 days", "kind": "warn" },
+        { "at": 3200, "text": "Heartbleed: not vulnerable", "kind": "ok" },
+        { "at": 3500, "text": "ROBOT: not vulnerable", "kind": "ok" },
+        { "at": 3800, "text": "HSTS: enabled, max-age=31536000 (no preload)" },
+        { "at": 4100, "text": "Final grade: B-" }
+      ]
+    },
+    {
+      "id": "dns_security_check",
+      "label": "DNS Security",
+      "duration_ms": 3500,
+      "log_lines": [
+        { "at": 0, "text": "[dns_security_check] Querying DNS records for quillfinance.io...", "kind": "tool" },
+        { "at": 250, "text": "MX records: 2 servers (Google Workspace)" },
+        { "at": 600, "text": "SPF record found: v=spf1 include:_spf.google.com include:mailgun.org -all" },
+        { "at": 900, "text": "SPF policy: hard fail (-all) — strong" },
+        { "at": 1300, "text": "DKIM selectors found: google, mailgun" },
+        { "at": 1700, "text": "Querying DMARC at _dmarc.quillfinance.io..." },
+        { "at": 2100, "text": "DMARC found: v=DMARC1; p=none; rua=mailto:dmarc@quillfinance.io" },
+        { "at": 2200, "text": "DMARC policy is 'none' — spoofed emails not blocked", "kind": "crit" },
+        { "at": 2600, "text": "DNSSEC: not enabled", "kind": "warn" },
+        { "at": 2900, "text": "CAA records: missing", "kind": "warn" },
+        { "at": 3200, "text": "Checking common subdomains for dangling CNAMEs..." },
+        { "at": 3400, "text": "staging.quillfinance.io → CNAME to deleted Heroku app", "kind": "crit" }
+      ]
+    },
+    {
+      "id": "email_security_audit",
+      "label": "Email Security",
+      "duration_ms": 3200,
+      "log_lines": [
+        { "at": 0, "text": "[email_security_audit] Comprehensive email posture analysis...", "kind": "tool" },
+        { "at": 400, "text": "Analyzing SPF mechanism chain (depth=4)" },
+        { "at": 1000, "text": "Validating DKIM key (RSA 2048-bit, strong)" },
+        { "at": 1500, "text": "Testing MX servers for STARTTLS support..." },
+        { "at": 2000, "text": "Both MX servers support STARTTLS", "kind": "ok" },
+        { "at": 2400, "text": "MTA-STS: not configured" },
+        { "at": 2700, "text": "BIMI: not configured (would require DMARC quarantine/reject)" },
+        { "at": 3100, "text": "Email security grade: D — DMARC policy 'none' is the blocker" }
+      ]
+    },
+    {
+      "id": "credential_check",
+      "label": "Breach Exposure",
+      "duration_ms": 2900,
+      "log_lines": [
+        { "at": 0, "text": "[credential_check] Domain breach check for quillfinance.io...", "kind": "tool" },
+        { "at": 600, "text": "Querying Have I Been Pwned domain endpoint..." },
+        { "at": 1300, "text": "Found 23 employee accounts in known breaches" },
+        { "at": 1400, "text": "Most impactful: LinkedIn 2021 (8 accounts)", "kind": "warn" },
+        { "at": 1900, "text": "Most impactful: Twitter 2022 (5 accounts)" },
+        { "at": 2400, "text": "Passwords exposed: 14 of 23 breaches", "kind": "crit" },
+        { "at": 2800, "text": "Risk: HIGH — credential stuffing likely" }
+      ]
+    }
+  ],
+  "reveals": [
+    {
+      "delay_ms": 200,
+      "section": "result-summary",
+      "html": "<div class=\"result-header\"><div><div class=\"result-title\">Quill Finance — Security Posture Report</div><div class=\"result-subtitle\">Combined external assessment · 4 tools · demo.quillfinance.io</div></div><div class=\"grade-badge grade-C\">C+</div></div><div class=\"stat-grid\"><div class=\"stat-box ok\"><div class=\"stat-box-label\">SSL/TLS</div><div class=\"stat-box-value\">B-</div></div><div class=\"stat-box warn\"><div class=\"stat-box-label\">DNS Security</div><div class=\"stat-box-value\">D+</div></div><div class=\"stat-box crit\"><div class=\"stat-box-label\">Email Security</div><div class=\"stat-box-value\">D</div></div><div class=\"stat-box crit\"><div class=\"stat-box-label\">Breach Exposure</div><div class=\"stat-box-value\">23</div></div></div>"
+    },
+    {
+      "delay_ms": 500,
+      "section": "result-findings",
+      "html": "<div class=\"result-title\" style=\"margin-bottom:16px\">Top findings, sorted by severity</div><div class=\"finding\"><div class=\"finding-severity sev-critical\">Critical</div><div class=\"finding-body\"><div class=\"finding-title\">Subdomain takeover risk: staging.quillfinance.io</div><div class=\"finding-desc\">CNAME points to a deleted Heroku app. An attacker can claim the Heroku name and serve content from your subdomain. Used for phishing and OAuth bypass.</div><div class=\"finding-meta\">dns_security_check · CWE-1004 · staging.quillfinance.io → quill-staging-app.herokuapp.com (404)</div></div><div class=\"finding-cta\">Remove CNAME →</div></div><div class=\"finding\"><div class=\"finding-severity sev-critical\">Critical</div><div class=\"finding-body\"><div class=\"finding-title\">DMARC policy is 'none' — emails can be spoofed</div><div class=\"finding-desc\">Phishers can send mail as @quillfinance.io and recipients won't see it as spoofed. With 23 breached employees, this is a credible BEC vector.</div><div class=\"finding-meta\">email_security_audit · v=DMARC1; p=none; rua=mailto:dmarc@quillfinance.io</div></div><div class=\"finding-cta\">Update DMARC →</div></div><div class=\"finding\"><div class=\"finding-severity sev-high\">High</div><div class=\"finding-body\"><div class=\"finding-title\">14 employee passwords exposed in breaches</div><div class=\"finding-desc\">Out of 23 breached employee accounts, 14 had passwords exposed. Force a password reset and confirm MFA on all of them. LinkedIn 2021 is the largest source.</div><div class=\"finding-meta\">credential_check · 23 accounts across 8 breaches · 14 with passwords</div></div><div class=\"finding-cta\">Force resets →</div></div><div class=\"finding\"><div class=\"finding-severity sev-high\">High</div><div class=\"finding-body\"><div class=\"finding-title\">TLS 1.0 still enabled</div><div class=\"finding-desc\">PCI DSS 4.0 prohibits TLS 1.0. Disable on the load balancer. No legitimate clients still need it.</div><div class=\"finding-meta\">ssl_tls_audit · accepted_protocols=[1.0, 1.1, 1.2, 1.3]</div></div><div class=\"finding-cta\">Fix TLS config →</div></div><div class=\"finding\"><div class=\"finding-severity sev-medium\">Medium</div><div class=\"finding-body\"><div class=\"finding-title\">Certificate expires in 12 days</div><div class=\"finding-desc\">Let's Encrypt cert renewal hasn't fired. Likely an expired auto-renewal hook. Get a fresh cert deployed before Day 14.</div><div class=\"finding-meta\">ssl_tls_audit · CN=*.quillfinance.io · expires 2026-05-15</div></div><div class=\"finding-cta\">Renew now →</div></div><div class=\"finding\"><div class=\"finding-severity sev-medium\">Medium</div><div class=\"finding-body\"><div class=\"finding-title\">CAA records missing</div><div class=\"finding-desc\">Without CAA records, any CA can issue a certificate for your domain. Add CAA records for your authorized CA(s) only.</div><div class=\"finding-meta\">dns_security_check · suggested: 0 issue \"letsencrypt.org\"</div></div><div class=\"finding-cta\">Add CAA →</div></div>"
+    },
+    {
+      "delay_ms": 400,
+      "section": "result-prompt",
+      "html": "<div class=\"result-h3\">What your agent did</div><p class=\"text-muted\" style=\"font-size:14px;margin-bottom:12px\">A natural-language agent prompt produces this report. Here's the call your agent made:</p><div class=\"mcp-prompt\">// Agent: \"Audit demo.quillfinance.io's external posture\"\n\nawait mcp.call(\"ssl_tls_audit\",        { hostname: \"demo.quillfinance.io\" });\nawait mcp.call(\"dns_security_check\",    { domain:   \"quillfinance.io\" });\nawait mcp.call(\"email_security_audit\",  { domain:   \"quillfinance.io\", include_mx_analysis: true });\nawait mcp.call(\"credential_check\",      { check_type: \"domain\", target: \"quillfinance.io\" });\n\n// Total cost: $1.50 (SSL $0.25 + DNS $0.25 + Email $0.50 + Breach $0.50)</div>"
+    }
+  ]
+}

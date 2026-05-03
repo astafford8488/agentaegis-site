@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="abuseipdb-verification" content="OkRiMxG5" />
+  <title>Incident Triage · AgentAegis Demo</title>
+  <meta name="description" content="3am brute-force attack on a fictional fintech's admin account. Watch AgentAegis classify, enrich, and respond in under 5 seconds." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/shared/demo.css" />
+</head>
+<body>
+
+<header class="demo-header">
+  <div class="container demo-nav">
+    <a href="/" class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2 L4 6 L4 12 C4 17 8 21 12 22 C16 21 20 17 20 12 L20 6 Z"/>
+        <path d="M9 12 L11 14 L15 10"/>
+      </svg>
+      AgentAegis
+    </a>
+    <div class="demo-nav-links">
+      <a href="/demos/">All Demos</a>
+      <a href="https://github.com/astafford8488/agentaegis-mcp" target="_blank" rel="noopener">GitHub</a>
+      <a href="#" class="btn btn-primary" data-beta-signup>Get Beta Access</a>
+    </div>
+  </div>
+</header>
+
+<main class="demo-page" id="demo-root">
+  <div class="container">
+    <div class="demo-breadcrumb">
+      <a href="/demos/">Demos</a>
+      <span class="sep">/</span>
+      <span>Incident Triage</span>
+    </div>
+
+    <h1 class="demo-title">Incident Triage at 3am</h1>
+    <p class="demo-subtitle">
+      Datadog pages your on-call. AgentAegis classifies the incident, enriches the indicators with threat intel,
+      checks the affected account against breach databases, and hands the on-call a 15-minute containment plan with comm templates.
+    </p>
+
+    <div class="scenario">
+      <div class="scenario-label">3:14am · Datadog Alert · P1</div>
+      <div class="scenario-target">admin@quillfinance.io · 198.51.100.42</div>
+      <div class="scenario-meta">
+        <span class="scenario-meta-item">⚠️ 47 failed logins → 1 success</span>
+        <span class="scenario-meta-item">🌍 Source: Moscow, RU</span>
+        <span class="scenario-meta-item">🔓 Admin role · payment vault access</span>
+      </div>
+    </div>
+
+    <section class="scan-area">
+      <div class="scan-status">
+        <span class="pulse"></span>
+        <span class="scan-status-text">Ready to triage</span>
+      </div>
+
+      <div class="tool-strip">
+        <div class="tool-card" data-tool="incident_triage">
+          <div class="tool-name">incident_triage</div>
+          <div class="tool-label">Classify Incident</div>
+          <svg class="tool-status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-6.2-8.6"/></svg>
+          <div class="tool-progress"><div class="tool-progress-bar"></div></div>
+        </div>
+        <div class="tool-card" data-tool="threat_intel_lookup">
+          <div class="tool-name">threat_intel_lookup</div>
+          <div class="tool-label">Threat Intel</div>
+          <svg class="tool-status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-6.2-8.6"/></svg>
+          <div class="tool-progress"><div class="tool-progress-bar"></div></div>
+        </div>
+        <div class="tool-card" data-tool="credential_check">
+          <div class="tool-name">credential_check</div>
+          <div class="tool-label">Breach Check</div>
+          <svg class="tool-status-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 12a9 9 0 11-6.2-8.6"/></svg>
+          <div class="tool-progress"><div class="tool-progress-bar"></div></div>
+        </div>
+      </div>
+
+      <div class="scan-log"></div>
+
+      <div class="scan-cta">
+        <button class="btn btn-primary btn-large btn-run">▶ Triage Incident</button>
+        <button class="btn btn-ghost btn-restart hidden">↻ Run Again</button>
+        <span class="scan-tagline">Synthetic data · ~5 seconds</span>
+      </div>
+    </section>
+
+    <section class="result-section hidden" id="result-summary"></section>
+    <section class="result-section hidden" id="result-containment"></section>
+    <section class="result-section hidden" id="result-comms"></section>
+    <section class="result-section hidden" id="result-prompt"></section>
+
+    <section class="beta-cta hidden">
+      <h3>Wire AgentAegis to your alerting</h3>
+      <p>Plug AgentAegis into your Datadog/PagerDuty/SIEM webhooks. Your on-call gets a triage report in their Slack DM before they finish opening the laptop.</p>
+      <button class="btn btn-primary btn-large" data-beta-signup>Get Beta Access</button>
+    </section>
+  </div>
+</main>
+
+<footer class="demo-footer">
+  <div class="container">
+    <p><a href="/demos/">← Back to all demos</a></p>
+  </div>
+</footer>
+
+<script src="/shared/demo-engine.js"></script>
+<script>
+  const engine = new AgentAegisDemo.Engine("#demo-root", "/demos/incident-triage/data.json");
+  engine.load().then(() => {
+    document.querySelector(".btn-run").addEventListener("click", () => engine.run());
+    document.querySelector(".btn-restart").addEventListener("click", () => engine.run());
+  });
+</script>
+</body>
+</html>

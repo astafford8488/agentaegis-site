@@ -83,6 +83,60 @@
     .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
     .btn-ghost:hover { border-color: var(--primary); color: var(--primary); opacity: 1; }
 
+    /* === BETA SIGNUP MODAL === */
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 1000;
+      background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .modal-backdrop.open { opacity: 1; pointer-events: auto; }
+    .modal {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 32px;
+      max-width: 480px; width: 100%;
+      transform: scale(0.96); transition: transform 0.2s;
+      position: relative;
+    }
+    .modal-backdrop.open .modal { transform: scale(1); }
+    .modal h3 { font-size: 22px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+    .modal p { color: var(--text-muted); margin-bottom: 20px; font-size: 14px; }
+    .modal-form { display: flex; flex-direction: column; gap: 12px; }
+    .modal-form input, .modal-form textarea {
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); font-family: inherit; font-size: 14px;
+      padding: 11px 14px; border-radius: 8px;
+      width: 100%;
+    }
+    .modal-form input:focus, .modal-form textarea:focus {
+      outline: none; border-color: var(--primary);
+    }
+    .modal-form input::placeholder, .modal-form textarea::placeholder {
+      color: #5a6480;
+    }
+    .modal-form button { margin-top: 6px; }
+    .modal-message {
+      padding: 12px 14px; border-radius: 8px; font-size: 13px;
+      display: none;
+    }
+    .modal-message.success {
+      display: block; background: rgba(0, 212, 168, 0.15); color: #00d4a8;
+      border: 1px solid #00d4a8;
+    }
+    .modal-message.error {
+      display: block; background: rgba(255, 100, 100, 0.15); color: #ff8a8a;
+      border: 1px solid #ff8a8a;
+    }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      background: transparent; border: none; color: var(--text-muted);
+      cursor: pointer; padding: 6px; border-radius: 6px;
+      font-size: 20px; line-height: 1;
+    }
+    .modal-close:hover { background: var(--bg); color: var(--text); }
+
     @media (max-width: 720px) {
       .nav-links { gap: 16px; }
       .nav-links a:not(.btn) { display: none; }
@@ -286,8 +340,9 @@
       <a href="#tools">Tools</a>
       <a href="#pricing">Pricing</a>
       <a href="#integrate">Integrate</a>
+      <a href="/demos/">Demos</a>
       <a href="https://github.com/astafford8488/agentaegis-mcp" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://github.com/astafford8488/agentaegis-mcp" class="btn btn-primary" target="_blank" rel="noopener">Get Started</a>
+      <a href="#" class="btn btn-primary" data-beta-signup>Get Beta Access</a>
     </div>
   </div>
 </header>
@@ -305,8 +360,8 @@
         Pay per call via x402 micropayments or API key. No subscriptions, no minimums.
       </p>
       <div class="hero-cta">
-        <a href="https://github.com/astafford8488/agentaegis-mcp" class="btn btn-primary" target="_blank" rel="noopener">View on GitHub</a>
-        <a href="#tools" class="btn btn-ghost">Browse Tools</a>
+        <a href="/demos/" class="btn btn-primary">Try the Demos →</a>
+        <a href="#" class="btn btn-ghost" data-beta-signup>Get Beta Access</a>
       </div>
 
       <div class="hero-stats">
@@ -389,6 +444,71 @@
     </div>
   </section>
 
+  <section id="demos" class="tools" style="padding-top: 80px;">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-eyebrow">See It In Action</div>
+        <h2>Six interactive demos</h2>
+        <p>Watch AgentAegis run against a fictional fintech, <strong>Quill Finance</strong>. Realistic findings, real tool output, no signup required.</p>
+      </div>
+
+      <div class="tools-grid">
+        <a href="/demos/security-audit/" class="tool" style="text-decoration:none; color:inherit;">
+          <div class="tool-row">
+            <span class="tool-name">90-second security audit</span>
+            <span class="tool-price">→</span>
+          </div>
+          <div class="tool-desc">SSL, DNS, email security, breach exposure — combined into one report card.</div>
+          <span class="tool-cat">4 tools · ~6s</span>
+        </a>
+        <a href="/demos/soc2-readiness/" class="tool" style="text-decoration:none; color:inherit;">
+          <div class="tool-row">
+            <span class="tool-name">SOC 2 readiness check</span>
+            <span class="tool-price">→</span>
+          </div>
+          <div class="tool-desc">Score, gaps, prioritized 90-day roadmap with effort + cost estimates.</div>
+          <span class="tool-cat">2 tools · ~7s</span>
+        </a>
+        <a href="/demos/code-audit/" class="tool" style="text-decoration:none; color:inherit;">
+          <div class="tool-row">
+            <span class="tool-name">code security audit</span>
+            <span class="tool-price">→</span>
+          </div>
+          <div class="tool-desc">SAST + secrets + dep CVEs on a fake repo. 22 findings with exact line numbers.</div>
+          <span class="tool-cat">3 tools · ~8s</span>
+        </a>
+        <a href="/demos/incident-triage/" class="tool" style="text-decoration:none; color:inherit;">
+          <div class="tool-row">
+            <span class="tool-name">incident triage at 3am</span>
+            <span class="tool-price">→</span>
+          </div>
+          <div class="tool-desc">Brute-force on admin account → classification, threat intel, containment plan.</div>
+          <span class="tool-cat">3 tools · ~5s</span>
+        </a>
+        <a href="/demos/policy-generator/" class="tool" style="text-decoration:none; color:inherit;">
+          <div class="tool-row">
+            <span class="tool-name">policy generator</span>
+            <span class="tool-price">→</span>
+          </div>
+          <div class="tool-desc">Interactive — pick a policy type and watch a tailored document render live.</div>
+          <span class="tool-cat">1 tool · interactive</span>
+        </a>
+        <a href="/demos/network-pentest/" class="tool" style="text-decoration:none; color:inherit;">
+          <div class="tool-row">
+            <span class="tool-name">network pen test</span>
+            <span class="tool-price">→</span>
+          </div>
+          <div class="tool-desc">Full nmap + Nuclei + risk prioritization. 26 findings, 8 prioritized actions.</div>
+          <span class="tool-cat">3 tools · ~10s</span>
+        </a>
+      </div>
+
+      <div style="text-align: center; margin-top: 32px;">
+        <a href="/demos/" class="btn btn-primary btn-large">View all demos →</a>
+      </div>
+    </div>
+  </section>
+
   <section id="pricing">
     <div class="container">
       <div class="section-head">
@@ -408,7 +528,7 @@
             <li>Webhooks for async scans</li>
             <li>Top up via card or invoice</li>
           </ul>
-          <a href="https://github.com/astafford8488/agentaegis-mcp" class="btn btn-ghost" target="_blank" rel="noopener">Sign Up</a>
+          <a href="#" class="btn btn-ghost" data-beta-signup>Get Beta Access</a>
         </div>
 
         <div class="price-card featured">
@@ -422,7 +542,7 @@
             <li>Standard x402 protocol</li>
             <li>Works with any x402 client</li>
           </ul>
-          <a href="https://github.com/astafford8488/agentaegis-mcp#payment-flow" class="btn btn-primary" target="_blank" rel="noopener">View Docs</a>
+          <a href="#" class="btn btn-primary" data-beta-signup>Get Beta Access</a>
         </div>
       </div>
     </div>
@@ -504,5 +624,6 @@
   </div>
 </footer>
 
+<script src="/shared/demo-engine.js"></script>
 </body>
 </html>

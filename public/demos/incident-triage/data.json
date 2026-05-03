@@ -1,0 +1,71 @@
+{
+  "scenario": {
+    "company": "Quill Finance",
+    "context": "On-call paged at 3:14am. Datadog alert: 47 failed logins followed by 1 successful login from 198.51.100.42 to admin@quillfinance.io. Admin role has access to payment processing config and the customer card vault."
+  },
+  "mode": "sequential",
+  "tools": [
+    {
+      "id": "incident_triage",
+      "label": "Incident Classification",
+      "duration_ms": 2400,
+      "log_lines": [
+        { "at": 0, "text": "[incident_triage] Analyzing incident description and indicators...", "kind": "tool" },
+        { "at": 300, "text": "Indicators: 1 IP, 1 email, login burst pattern" },
+        { "at": 700, "text": "Pattern matching: 47 failed → 1 success = brute force / credential stuffing" },
+        { "at": 1100, "text": "Time of day: 3:14am UTC (off-hours, low legit traffic)" },
+        { "at": 1500, "text": "Affected role: admin (privileged, payment vault access)" },
+        { "at": 1800, "text": "Severity computed: P1 (critical) — privileged account compromise possible" },
+        { "at": 2200, "text": "Classification: credential_stuffing · confidence 92%" }
+      ]
+    },
+    {
+      "id": "threat_intel_lookup",
+      "label": "Threat Intel — IP",
+      "duration_ms": 1800,
+      "log_lines": [
+        { "at": 0, "text": "[threat_intel_lookup] Querying IP 198.51.100.42 across feeds...", "kind": "tool" },
+        { "at": 400, "text": "AbuseIPDB: 142 reports in last 30 days, score 96/100", "kind": "crit" },
+        { "at": 800, "text": "Categories: Brute-Force, SSH, Web App Attack, Bad Web Bot" },
+        { "at": 1200, "text": "AlienVault OTX: appears in 3 active pulses (credential stuffing operations)" },
+        { "at": 1500, "text": "Geo: Russian Federation, Moscow · ASN 12389 (Rostelecom)" },
+        { "at": 1700, "text": "Verdict: MALICIOUS — block at WAF immediately" }
+      ]
+    },
+    {
+      "id": "credential_check",
+      "label": "Account Breach Check",
+      "duration_ms": 1600,
+      "log_lines": [
+        { "at": 0, "text": "[credential_check] Checking admin@quillfinance.io against breach databases...", "kind": "tool" },
+        { "at": 500, "text": "Have I Been Pwned: 4 breaches found", "kind": "warn" },
+        { "at": 800, "text": "  LinkedIn 2021 — Passwords: YES", "kind": "crit" },
+        { "at": 1100, "text": "  Adobe 2013 — Passwords: YES (hashed, weak)", "kind": "warn" },
+        { "at": 1300, "text": "  Dropbox 2012 — Passwords: YES" },
+        { "at": 1500, "text": "Hypothesis confirmed: admin password likely reused from breach corpus" }
+      ]
+    }
+  ],
+  "reveals": [
+    {
+      "delay_ms": 200,
+      "section": "result-summary",
+      "html": "<div class=\"result-header\"><div><div style=\"display:inline-flex;align-items:center;gap:8px;padding:4px 10px;background:var(--crit-glow);color:var(--crit);border:1px solid var(--crit);border-radius:6px;font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:12px\">⚠ P1 INCIDENT</div><div class=\"result-title\">Credential stuffing — privileged account compromise likely</div><div class=\"result-subtitle\">admin@quillfinance.io · 198.51.100.42 (Moscow, RU) · 3:14am UTC · confidence 92%</div></div></div><div class=\"stat-grid\"><div class=\"stat-box crit\"><div class=\"stat-box-label\">Severity</div><div class=\"stat-box-value\">P1</div></div><div class=\"stat-box crit\"><div class=\"stat-box-label\">IP Reputation</div><div class=\"stat-box-value\">96/100</div></div><div class=\"stat-box warn\"><div class=\"stat-box-label\">Account in Breaches</div><div class=\"stat-box-value\">4</div></div><div class=\"stat-box\"><div class=\"stat-box-label\">Response SLA</div><div class=\"stat-box-value\">15 min</div></div></div><p class=\"text-muted\" style=\"margin-top:8px;font-size:14px\">High confidence the attacker successfully authenticated. Containment must complete in the next 15 minutes before the attacker pivots from admin role into the payment vault.</p>"
+    },
+    {
+      "delay_ms": 400,
+      "section": "result-containment",
+      "html": "<div class=\"result-title\" style=\"margin-bottom:8px\">⏱ Containment plan — execute in this order</div><p class=\"text-muted\" style=\"font-size:13px;margin-bottom:16px\">Each step is sequenced to limit attacker dwell time without destroying forensic evidence.</p><div class=\"finding\"><div class=\"finding-severity sev-critical\">0–2 min</div><div class=\"finding-body\"><div class=\"finding-title\">1. Force-revoke active session for admin@quillfinance.io</div><div class=\"finding-desc\">In Okta admin console: User Profile → Active Sessions → Revoke. This kicks the attacker out of any existing session without alerting them via password reset.</div><div class=\"finding-meta\">okta.quillfinance.io/admin/users/00u****J9</div></div></div><div class=\"finding\"><div class=\"finding-severity sev-critical\">2–5 min</div><div class=\"finding-body\"><div class=\"finding-title\">2. Block 198.51.100.42 at the Cloudflare WAF</div><div class=\"finding-desc\">Add deny rule for source IP. Also consider blocking the /24 (198.51.100.0/24) since stuffing operations rotate IPs in adjacent ranges.</div><div class=\"finding-meta\">Cloudflare → Security → WAF → Custom Rules</div></div></div><div class=\"finding\"><div class=\"finding-severity sev-high\">5–8 min</div><div class=\"finding-body\"><div class=\"finding-title\">3. Audit recent admin actions in CloudTrail</div><div class=\"finding-desc\">Pull all API calls from admin@quillfinance.io's session in the last 4 hours. Look for: payment config changes, IAM role grants, S3 reads from card-vault bucket, secret rotations.</div><div class=\"finding-meta\">aws cloudtrail lookup-events --lookup-attributes AttributeKey=Username,AttributeValue=admin@quillfinance.io</div></div></div><div class=\"finding\"><div class=\"finding-severity sev-high\">8–12 min</div><div class=\"finding-body\"><div class=\"finding-title\">4. Force password reset + MFA re-enrollment</div><div class=\"finding-desc\">After session revoke and audit. Issue temporary password via secure channel (in-person or Signal), require MFA re-enrollment with a hardware key.</div><div class=\"finding-meta\">Okta → User Profile → Reset Password (admin-initiated)</div></div></div><div class=\"finding\"><div class=\"finding-severity sev-medium\">12–15 min</div><div class=\"finding-body\"><div class=\"finding-title\">5. Preserve forensic evidence before any cleanup</div><div class=\"finding-desc\">Snapshot Okta system log, CloudTrail JSON dumps, WAF logs, and Datadog audit timeline. Store in s3://quillfinance-incidents/2026-05-03/.</div><div class=\"finding-meta\">Required for post-incident review and any law enforcement coordination</div></div></div>"
+    },
+    {
+      "delay_ms": 400,
+      "section": "result-comms",
+      "html": "<div class=\"result-h3\">📨 Communication templates</div><div style=\"display:grid;gap:14px\"><div style=\"background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px\"><div style=\"font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px\">Internal — Slack #incident-response</div><div style=\"font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text);white-space:pre-wrap\">🚨 P1 SECURITY INCIDENT — credential stuffing on admin account\n\nWhat: Successful login to admin@quillfinance.io after 47 failed attempts from a known-malicious IP (Moscow, RU).\nWhen: 3:14am UTC, ongoing.\nScope: admin role has payment config + card vault read access.\nIC: @oncall-security · Comms: @cto · Legal on standby.\n\nUpdates every 15 min. Containment plan running, ETA 15 min.</div></div><div style=\"background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px\"><div style=\"font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px\">Customer notification — only if cardholder data accessed</div><div style=\"font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text);white-space:pre-wrap\">Subject: Security update from Quill Finance\n\nWe are investigating a security event affecting one of our internal admin accounts. At this time we have no evidence that customer data was accessed. We will provide an update within 24 hours.\n\nAs a precaution, we recommend reviewing your account activity at app.quillfinance.io/security.</div></div><div style=\"background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px\"><div style=\"font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-dim);margin-bottom:6px\">Regulatory — only if PCI scope confirmed breached</div><div style=\"font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--text);white-space:pre-wrap\">Subject: Suspected security event — Quill Finance\nTo: payment_card_brand_security@[brand].com · acquiring_bank_security@[bank].com\n\nQuill Finance is investigating a suspected unauthorized access to systems within our PCI scope. Initial indicators suggest credential compromise of a privileged administrator account at 03:14 UTC on [date]. We are following our incident response plan and will provide a formal notification within the contractual timeframe.</div></div></div>"
+    },
+    {
+      "delay_ms": 400,
+      "section": "result-prompt",
+      "html": "<div class=\"result-h3\">What your agent did</div><div class=\"mcp-prompt\">// Datadog → triggers a webhook to your agent at 3:14am\n// Agent: \"Triage this security alert and tell me what to do\"\n\nconst triage = await mcp.call(\"incident_triage\", {\n  incident_description: \"47 failed logins followed by 1 successful login to admin account from Russia at 3am\",\n  indicators: {\n    suspicious_ips: [\"198.51.100.42\"],\n    affected_accounts: [\"admin@quillfinance.io\"],\n    log_snippets: [\"<datadog alert payload>\"]\n  },\n  environment_context: { has_edr: true, has_siem: true, has_backups: true, has_incident_response_plan: true }\n});\n\n// Agent: \"Look up the IP and check if the email is in any breaches\"\nconst [intel, breach] = await Promise.all([\n  mcp.call(\"threat_intel_lookup\", { indicator: \"198.51.100.42\", indicator_type: \"ip\" }),\n  mcp.call(\"credential_check\",    { check_type: \"email\", target: \"admin@quillfinance.io\" })\n]);\n\n// Total cost: $1.50 (triage $0.75 + intel $0.25 + breach $0.50) · ~5 seconds wall clock\n// Output: containment plan + comm templates, all delivered to on-call's Slack DM</div>"
+    }
+  ]
+}
