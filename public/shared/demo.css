@@ -139,6 +139,38 @@ a:hover { opacity: 0.8; }
   border-radius: 6px;
 }
 
+/* === STORY / NARRATIVE === */
+.story {
+  background: linear-gradient(135deg, rgba(91, 141, 239, 0.08), rgba(0, 212, 168, 0.04));
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--primary);
+  border-radius: 12px;
+  padding: 22px 26px;
+  margin-bottom: 24px;
+}
+.story-label {
+  font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--primary); font-weight: 700; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.story-label::before {
+  content: ""; width: 14px; height: 1px; background: var(--primary);
+}
+.story p {
+  font-size: 15px; line-height: 1.65; color: var(--text);
+  margin-bottom: 10px;
+}
+.story p:last-child { margin-bottom: 0; }
+.story p strong { color: var(--text); font-weight: 600; }
+.story .punchline {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--border);
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 14px;
+}
+
 /* === SCAN SECTION === */
 .scan-area {
   background: var(--bg-card); border: 1px solid var(--border);

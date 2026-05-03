@@ -1,6 +1,6 @@
 # AgentAegis Landing Page
 
-Static landing page for [agentaegis.com](https://agentaegis.com).
+Static landing page for [agentaegis.org](https://agentaegis.org).
 
 ## Local preview
 
@@ -21,7 +21,7 @@ vercel
 # When asked for output directory, type: public
 ```
 
-Then add the custom domain in Vercel dashboard → Settings → Domains → add `agentaegis.com`.
+Then add the custom domain in Vercel dashboard → Settings → Domains → add `agentaegis.org`.
 
 ### Cloudflare Pages
 
@@ -43,4 +43,4 @@ Two methods (both included):
 1. **File method:** `public/abuseipdb-verification.html` contains the token
 2. **Meta tag method:** `<meta name="abuseipdb-verification" content="OkRiMxG5" />` in `index.html`
 
-After deployment, visit https://agentaegis.com/abuseipdb-verification.html to confirm it serves correctly, then click "Verify Domain Now" in AbuseIPDB.
+After deployment, visit https://agentaegis.org/abuseipdb-verification.html to confirm it serves correctly, then click "Verify Domain Now" in AbuseIPDB.

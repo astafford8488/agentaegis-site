@@ -55,6 +55,28 @@
       </div>
     </div>
 
+    <div class="story">
+      <div class="story-label">What's happening</div>
+      <p>
+        It's 3:14 in the morning. Datadog detects 47 failed login attempts followed by one successful login from
+        a Russian IP to the <code>admin@quillfinance.io</code> account. The admin role can read the customer card vault
+        and rotate payment processing config. PagerDuty wakes the on-call engineer.
+      </p>
+      <p>
+        Most security teams measure the worst metric in security: <strong>dwell time</strong>. The on-call has to
+        wake up, classify the incident, look up reputations, decide on containment, write internal comms — and
+        every minute the attacker is moving.
+      </p>
+      <p>
+        AgentAegis is wired into the alerting webhook. It classifies the incident (credential stuffing, P1, 92% confidence),
+        enriches the IP across three threat intel feeds, checks the affected email against breach databases, and produces
+        an ordered 15-minute containment plan plus comm templates — all delivered to the on-call's Slack DM.
+      </p>
+      <p class="punchline">
+        The on-call wakes up to a plan, not a puzzle. $1.50, 5 seconds.
+      </p>
+    </div>
+
     <section class="scan-area">
       <div class="scan-status">
         <span class="pulse"></span>

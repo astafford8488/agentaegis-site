@@ -1,7 +1,7 @@
 {
   "name": "agentaegis-site",
   "version": "1.0.0",
-  "description": "AgentAegis landing page (agentaegis.com)",
+  "description": "AgentAegis landing page (agentaegis.org)",
   "private": true,
   "scripts": {
     "dev": "npx serve public",

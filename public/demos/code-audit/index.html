@@ -55,6 +55,24 @@
       </div>
     </div>
 
+    <div class="story">
+      <div class="story-label">What's happening</div>
+      <p>
+        Quill Finance's payments-api is the hot path — it tokenizes cards, calls Stripe, and writes to the customer vault.
+        The CTO wants a security review before the next release. Traditional code audits run <strong>$5–15k</strong>
+        and take 2–3 weeks; the developers usually just hope for the best and ship.
+      </p>
+      <p>
+        AgentAegis runs three industry-standard scanners in parallel: <strong>trufflehog</strong> for hardcoded secrets,
+        <strong>Semgrep</strong> for code-level vulnerabilities (SQL injection, XSS, missing auth, weak crypto),
+        and <strong>trivy</strong> for known CVEs in dependencies. The output is a unified findings list with exact
+        line numbers, redacted secret previews, severity ratings, and the literal upgrade commands to fix dependencies.
+      </p>
+      <p class="punchline">
+        $2.00 in tool calls, 8 seconds, and you find out two AWS keys are live in production before lunch.
+      </p>
+    </div>
+
     <section class="scan-area">
       <div class="scan-status">
         <span class="pulse"></span>

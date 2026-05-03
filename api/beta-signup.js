@@ -40,7 +40,7 @@ export default async function handler(req, res) {
 
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const RESEND_AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID;
-  const NOTIFY_TO = process.env.BETA_SIGNUP_NOTIFY_TO || "thegatesoftroy@gmail.com";
+  const NOTIFY_TO = process.env.BETA_SIGNUP_NOTIFY_TO || "admin@youraigroup.com";
   const FROM_ADDRESS = process.env.BETA_SIGNUP_FROM || "AgentAegis <onboarding@resend.dev>";
 
   if (!RESEND_API_KEY) {
