@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="abuseipdb-verification" content="OkRiMxG5" />
+  <title>FAQ · AgentAegis</title>
+  <meta name="description" content="Authentication, billing, tool catalog, async jobs, error codes, rate limits, security — answers for both human developers and AI agents." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/shared/demo.css" />
+  <style>
+    .faq-shell { padding: 64px 0 96px; }
+    .faq-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 100px;
+      background: var(--bg-card); border: 1px solid var(--border);
+      font-size: 13px; color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .faq-tag-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); box-shadow: 0 0 8px var(--accent);
+    }
+    h1.faq-title {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 800; letter-spacing: -0.025em;
+      margin-bottom: 12px;
+      background: linear-gradient(180deg, #fff 0%, #aab4cc 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    p.faq-subtitle { font-size: 17px; color: var(--text-muted); max-width: 720px; margin-bottom: 32px; }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 32px;
+      margin-top: 32px;
+    }
+    @media (max-width: 720px) {
+      .faq-grid { grid-template-columns: 1fr; }
+    }
+
+    .faq-toc {
+      position: sticky; top: 80px; align-self: start;
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px;
+    }
+    .faq-toc-label {
+      font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--text-dim); margin-bottom: 10px; font-weight: 600;
+    }
+    .faq-toc a {
+      display: block; padding: 6px 8px; border-radius: 6px;
+      color: var(--text-muted); font-size: 13.5px;
+      text-decoration: none;
+      transition: all 0.1s;
+    }
+    .faq-toc a:hover {
+      background: var(--bg); color: var(--text); opacity: 1;
+    }
+    .faq-toc a.active { background: var(--bg); color: var(--primary); }
+
+    .faq-section {
+      margin-bottom: 48px; scroll-margin-top: 80px;
+    }
+    .faq-section h2 {
+      font-size: 22px; font-weight: 700; letter-spacing: -0.01em;
+      margin-bottom: 18px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+    .faq-entry {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .faq-entry h3 {
+      font-size: 16px; font-weight: 600; color: var(--text);
+      margin-bottom: 10px; letter-spacing: -0.01em;
+    }
+    .faq-entry p { color: var(--text-muted); font-size: 14.5px; line-height: 1.65; }
+    .faq-entry pre {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 14px 16px;
+      font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+      line-height: 1.55; color: var(--text);
+      margin-top: 12px;
+      overflow-x: auto; white-space: pre;
+    }
+    .faq-entry code {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg); padding: 1px 6px;
+      border-radius: 4px; font-size: 13px; color: var(--accent);
+    }
+    .faq-loading {
+      text-align: center; padding: 64px 16px;
+      color: var(--text-dim); font-size: 14px;
+    }
+    .agent-banner {
+      background: linear-gradient(135deg, rgba(91, 141, 239, 0.1), rgba(0, 212, 168, 0.06));
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--primary);
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 28px;
+    }
+    .agent-banner p {
+      color: var(--text); font-size: 14.5px; line-height: 1.6;
+      margin: 0;
+    }
+    .agent-banner code {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg); padding: 1px 6px;
+      border-radius: 4px; font-size: 12.5px; color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+<header class="demo-header">
+  <div class="container demo-nav">
+    <a href="/" class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2 L4 6 L4 12 C4 17 8 21 12 22 C16 21 20 17 20 12 L20 6 Z"/>
+        <path d="M9 12 L11 14 L15 10"/>
+      </svg>
+      AgentAegis
+    </a>
+    <div class="demo-nav-links">
+      <a href="/#tools">Tools</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/demos/">Demos</a>
+      <a href="/faq/">FAQ</a>
+      <a href="https://github.com/astafford8488/agentaegis-mcp" target="_blank" rel="noopener">GitHub</a>
+      <a href="#" class="btn btn-primary" data-beta-signup>Get Beta Access</a>
+    </div>
+  </div>
+</header>
+
+<main class="faq-shell">
+  <div class="container">
+    <div class="faq-tag">
+      <span class="faq-tag-dot"></span>
+      Auto-synced with the live API
+    </div>
+    <h1 class="faq-title">Frequently asked questions.</h1>
+    <p class="faq-subtitle">
+      Everything you need to integrate AgentAegis — authentication, billing, tool catalog, async jobs,
+      error codes, rate limits, security. Both human-readable and agent-callable.
+    </p>
+
+    <div class="agent-banner">
+      <p>
+        <strong>If you're an AI agent reading this:</strong> the same content is available as an MCP tool call:
+        <code>{"name": "help", "arguments": {"topic": "all"}}</code>
+        — or as JSON at <code>https://agentaegis-mcp-production.up.railway.app/faq</code>.
+        Both are free. Filter by topic with <code>?topic=authentication</code>.
+      </p>
+    </div>
+
+    <div class="faq-grid">
+      <nav class="faq-toc" id="toc">
+        <div class="faq-toc-label">Topics</div>
+        <div id="toc-list"><div class="faq-loading">Loading...</div></div>
+      </nav>
+
+      <div id="faq-body">
+        <div class="faq-loading">Fetching latest FAQ from the live API...</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="demo-footer">
+  <div class="container">
+    <p><a href="/">← Back home</a> · <a href="/demos/">Try a demo</a> · <a href="https://github.com/astafford8488/agentaegis-mcp" target="_blank" rel="noopener">GitHub</a></p>
+  </div>
+</footer>
+
+<script src="/shared/demo-engine.js"></script>
+<script>
+  const FAQ_API = "https://agentaegis-mcp-production.up.railway.app/faq";
+
+  const TOPIC_LABELS = {
+    getting_started: "Getting started",
+    authentication: "Authentication",
+    balance_and_billing: "Balance & billing",
+    tools: "Tools & pricing",
+    async_jobs: "Async jobs",
+    integration: "Integration",
+    errors: "Errors",
+    x402: "x402 micropayment",
+    rate_limits: "Rate limits",
+    security: "Security",
+  };
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  }
+
+  function highlightInline(text) {
+    // Wrap `code` spans in actual <code> tags. The FAQ uses backticks lightly.
+    return escapeHtml(text).replace(/`([^`]+)`/g, "<code>$1</code>");
+  }
+
+  async function load() {
+    let data;
+    try {
+      const r = await fetch(FAQ_API + "?topic=all");
+      if (!r.ok) throw new Error("Failed to load FAQ: " + r.status);
+      data = await r.json();
+    } catch (err) {
+      document.getElementById("faq-body").innerHTML =
+        '<div class="faq-loading" style="color: var(--crit)">' +
+        'Could not reach the live FAQ API. ' +
+        '<a href="https://github.com/astafford8488/agentaegis-mcp/blob/master/src/tools/account/help.ts" style="color: var(--primary)">View source</a>' +
+        '</div>';
+      return;
+    }
+
+    // Group entries by topic
+    const grouped = {};
+    for (const entry of data.entries) {
+      if (!grouped[entry.topic]) grouped[entry.topic] = [];
+      grouped[entry.topic].push(entry);
+    }
+
+    // Render TOC
+    const tocList = document.getElementById("toc-list");
+    tocList.innerHTML = data.topics_available.map(topic =>
+      '<a href="#' + topic + '">' + (TOPIC_LABELS[topic] || topic) + '</a>'
+    ).join("");
+
+    // Render body
+    const body = document.getElementById("faq-body");
+    body.innerHTML = data.topics_available.map(topic => {
+      const entries = grouped[topic] || [];
+      return '<section class="faq-section" id="' + topic + '">' +
+        '<h2>' + (TOPIC_LABELS[topic] || topic) + '</h2>' +
+        entries.map(e =>
+          '<div class="faq-entry">' +
+            '<h3>' + highlightInline(e.question) + '</h3>' +
+            '<p>' + highlightInline(e.answer) + '</p>' +
+            (e.example ? '<pre>' + escapeHtml(e.example) + '</pre>' : "") +
+          '</div>'
+        ).join("") +
+        '</section>';
+    }).join("");
+
+    // Scrollspy: highlight active TOC item as user scrolls
+    const sections = document.querySelectorAll(".faq-section");
+    const tocLinks = document.querySelectorAll("#toc-list a");
+    const activate = () => {
+      let active = sections[0]?.id;
+      for (const s of sections) {
+        if (s.getBoundingClientRect().top < 120) active = s.id;
+      }
+      tocLinks.forEach(a => a.classList.toggle("active", a.getAttribute("href") === "#" + active));
+    };
+    activate();
+    document.addEventListener("scroll", activate, { passive: true });
+  }
+
+  load();
+</script>
+</body>
+</html>
