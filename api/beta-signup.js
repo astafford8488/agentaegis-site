@@ -58,6 +58,21 @@ export default async function handler(req, res) {
   }
 
   const errors = [];
+  const diagnostics = [];
+
+  // 0. Probe whether the configured ID is actually an audience.
+  //    Resend exposes GET /audiences/{id} which 200s for audiences.
+  //    A segment ID will 404. This is purely diagnostic.
+  if (RESEND_AUDIENCE_ID) {
+    try {
+      const probe = await fetch(`https://api.resend.com/audiences/${encodeURIComponent(RESEND_AUDIENCE_ID)}`, {
+        headers: { Authorization: `Bearer ${RESEND_API_KEY}` },
+      });
+      diagnostics.push(`probe_audience: HTTP ${probe.status} (200 = valid audience id, 404 = likely segment id)`);
+    } catch (err) {
+      diagnostics.push(`probe_audience: ${String(err).slice(0, 100)}`);
+    }
+  }
 
   // 1. Add to Resend audience (if configured)
   if (RESEND_AUDIENCE_ID) {
@@ -79,6 +94,8 @@ export default async function handler(req, res) {
       if (!r.ok) {
         const body = await r.text().catch(() => "");
         errors.push(`audience_add: ${r.status} ${body.slice(0, 200)}`);
+      } else {
+        diagnostics.push("audience_add: 200 OK");
       }
     } catch (err) {
       errors.push(`audience_add: ${String(err).slice(0, 200)}`);
@@ -125,17 +142,27 @@ export default async function handler(req, res) {
     errors.push(`notify: ${String(err).slice(0, 200)}`);
   }
 
+  // Always emit a structured info log so we can audit signups in Vercel logs
+  console.log("[beta-signup]", JSON.stringify({
+    email: safeEmail,
+    name: safeName || null,
+    company: safeCompany || null,
+    diagnostics,
+    errors,
+    audience_id_provided: !!RESEND_AUDIENCE_ID,
+  }));
+
   if (errors.length > 0) {
     console.error("[beta-signup] partial failure", errors);
-    // Still return success to user — we've at least logged it
     return res.status(200).json({
       ok: true,
       message: "Signup received",
       warnings: errors,
+      diagnostics,
     });
   }
 
-  return res.status(200).json({ ok: true, message: "Signup received" });
+  return res.status(200).json({ ok: true, message: "Signup received", diagnostics });
 }
 
 function escapeHtml(s) {
