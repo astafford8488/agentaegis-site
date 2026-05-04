@@ -58,6 +58,10 @@ a:hover { opacity: 0.8; }
 .demo-nav-links { display: flex; gap: 24px; align-items: center; font-size: 14px; }
 .demo-nav-links a { color: var(--text-muted); }
 .demo-nav-links a:hover { color: var(--text); opacity: 1; }
+.demo-nav-links a.btn-primary { color: #ffffff; }
+.demo-nav-links a.btn-primary:hover { color: #ffffff; opacity: 1; }
+.demo-nav-links a.btn-ghost { color: var(--text); }
+.demo-nav-links a.btn-ghost:hover { color: var(--primary); }
 
 /* === BUTTONS === */
 .btn {

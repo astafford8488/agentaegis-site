@@ -39,7 +39,12 @@ export default async function handler(req, res) {
   const safeEmail = email.trim().toLowerCase().slice(0, 200);
 
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
-  const RESEND_AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID;
+  // Accept either env var name. The Resend API endpoint we hit
+  // (POST /audiences/{id}/contacts) expects the AUDIENCE id (parent
+  // container), not a segment id. If a segment id is passed, the
+  // request will 404 — surfaced in the warnings array below.
+  const RESEND_AUDIENCE_ID =
+    process.env.RESEND_AUDIENCE_ID || process.env.RESEND_AUDIENCE_SEGMENT_ID;
   const NOTIFY_TO = process.env.BETA_SIGNUP_NOTIFY_TO || "admin@youraigroup.com";
   const FROM_ADDRESS = process.env.BETA_SIGNUP_FROM || "AgentAegis <onboarding@resend.dev>";
 
