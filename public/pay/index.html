@@ -35,6 +35,17 @@
       letter-spacing: 0.04em; text-transform: uppercase; font-weight: 600;
       margin-bottom: 6px;
     }
+    .label-row {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .label-row label { margin-bottom: 0; }
+    .label-help {
+      font-size: 11px; color: var(--text-dim);
+      text-transform: none; letter-spacing: 0; font-weight: 400;
+    }
+    .label-help a { color: var(--primary); text-decoration: none; }
+    .label-help a:hover { text-decoration: underline; }
     input {
       width: 100%; box-sizing: border-box;
       background: var(--bg); border: 1px solid var(--border);
@@ -78,6 +89,42 @@
       display: flex; align-items: center; gap: 6px; justify-content: center;
       font-size: 12px; color: var(--text-dim); margin-top: 16px;
     }
+    .new-user-banner {
+      background: rgba(91, 141, 239, 0.08);
+      border: 1px solid rgba(91, 141, 239, 0.25);
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .new-user-banner.show { display: block; }
+    .new-user-banner h2 {
+      font-size: 14px; font-weight: 600; margin: 0 0 6px 0;
+      color: var(--text);
+    }
+    .new-user-banner p {
+      font-size: 13px; line-height: 1.5;
+      color: var(--text-muted); margin: 0 0 10px 0;
+    }
+    .new-user-banner .btn-row {
+      display: flex; gap: 8px; flex-wrap: wrap;
+    }
+    .new-user-banner a {
+      display: inline-block;
+      background: var(--primary); color: white;
+      padding: 8px 14px; border-radius: 6px;
+      font-size: 13px; text-decoration: none; font-weight: 500;
+    }
+    .new-user-banner a:hover { background: #4a7be0; }
+    .new-user-banner a.secondary {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .new-user-banner a.secondary:hover {
+      border-color: var(--primary);
+      color: var(--text);
+    }
   </style>
 </head>
 <body>
@@ -102,10 +149,28 @@
       Cancel any time — unused balance stays on your account.
     </p>
 
+    <!-- Shown ONLY when no customer ID is auto-populated from the URL -->
+    <div class="new-user-banner" id="new-user-banner">
+      <h2>Need a customer ID first?</h2>
+      <p>
+        Top-ups are linked to a customer account. If this is your first time here, sign up
+        for free — no payment until you make a top-up.
+      </p>
+      <div class="btn-row">
+        <a href="/#beta-signup">Sign up (free, 30 sec)</a>
+        <a href="https://app.agentaegis.org/account" class="secondary">I already have an account →</a>
+      </div>
+    </div>
+
     <form class="pay-form" id="pay-form">
       <div>
-        <label for="customer-id">Customer ID</label>
-        <input type="text" id="customer-id" name="customer_id" placeholder="Auto-filled from URL or manual entry" required />
+        <div class="label-row">
+          <label for="customer-id">Customer ID</label>
+          <span class="label-help">
+            <a href="https://app.agentaegis.org/account" target="_blank" rel="noopener">Find mine →</a>
+          </span>
+        </div>
+        <input type="text" id="customer-id" name="customer_id" placeholder="3a6ad40a-9832-4877-ad27-2ffd0dea9472" required />
       </div>
 
       <div>
@@ -133,7 +198,7 @@
     </div>
 
     <div class="pay-meta">
-      Need an account first? <a href="/faq/#getting_started">See the FAQ</a>.<br/>
+      First time here? <a href="/#beta-signup">Sign up</a> or <a href="https://app.agentaegis.org/login">sign in</a>.<br/>
       Questions? Email <a href="mailto:admin@youraigroup.com">admin@youraigroup.com</a>
     </div>
   </div>
@@ -147,13 +212,31 @@
   const amountInput = document.getElementById("amount");
   const errorEl = document.getElementById("pay-error");
   const submitBtn = document.getElementById("pay-submit");
+  const newUserBanner = document.getElementById("new-user-banner");
 
-  // Pre-fill customer_id from ?customer query param
+  // Accept both ?customer= and ?customer_id= (the portal links with customer_id;
+  // legacy demo links use customer). Same for ?amount.
   const params = new URLSearchParams(location.search);
-  const customerFromUrl = params.get("customer");
+  const customerFromUrl = params.get("customer_id") || params.get("customer");
   const amountFromUrl = params.get("amount");
-  if (customerFromUrl) customerInput.value = customerFromUrl;
+  if (customerFromUrl) {
+    customerInput.value = customerFromUrl;
+  } else {
+    // No customer ID was passed in — show the new-user banner with paths to
+    // signup or sign-in.
+    newUserBanner.classList.add("show");
+  }
   if (amountFromUrl) amountInput.value = amountFromUrl;
+
+  // Hide the banner the moment the user starts typing a customer ID — they
+  // probably know what they're doing.
+  customerInput.addEventListener("input", () => {
+    if (customerInput.value.trim().length > 0) {
+      newUserBanner.classList.remove("show");
+    } else {
+      newUserBanner.classList.add("show");
+    }
+  });
 
   // Preset amount buttons
   document.querySelectorAll(".preset").forEach(btn => {
@@ -188,7 +271,7 @@
     const amount = parseFloat(amountInput.value);
 
     if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(customerId)) {
-      showError("Customer ID looks malformed. It should be a UUID like 3a6ad40a-9832-4877-ad27-2ffd0dea9472.");
+      showError("Customer ID looks malformed. It should be a UUID like 3a6ad40a-9832-4877-ad27-2ffd0dea9472. Find yours at app.agentaegis.org/account.");
       submitBtn.disabled = false;
       submitBtn.textContent = "Continue to Stripe →";
       return;
