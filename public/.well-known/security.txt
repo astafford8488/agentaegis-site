@@ -1,0 +1,21 @@
+# security.txt for AgentAegis (RFC 9116)
+# Particularly important for us since AgentAegis IS a cybersecurity product.
+# If you find a security issue, please report it via the contact below.
+
+Contact: mailto:admin@youraigroup.com
+Expires: 2027-05-13T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://www.agentaegis.org/.well-known/security.txt
+Policy: https://www.agentaegis.org/faq/#security
+
+# In scope
+# - https://www.agentaegis.org (marketing site)
+# - https://app.agentaegis.org (customer portal)
+# - https://agentaegis-mcp-production.up.railway.app (MCP server)
+
+# Out of scope
+# - Third-party services we depend on (Supabase, Stripe, Vercel, Railway, Cloudflare)
+# - Open-source engines we wrap (report directly to those projects: nmap, Nuclei, Semgrep, sslyze, trufflehog, trivy)
+# - DDoS / volumetric attacks
+# - Social engineering of staff
+# - Physical security

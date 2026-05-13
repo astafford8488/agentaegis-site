@@ -3,16 +3,144 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="AgentAegis — every cybersecurity service, callable by any AI agent. Pay-as-you-go via x402 micropayments or API key. 20 tools. Built for AI agents." />
+  <meta name="description" content="22 cybersecurity workflows callable by any AI agent. AgentAegis wraps battle-tested open-source engines (nmap, Nuclei, Semgrep, sslyze, trufflehog, trivy) and threat-intel APIs behind a unified MCP server. Pay per call via API key or x402 USDC micropayments. Patent pending." />
 
   <!-- AbuseIPDB domain verification (backup to /abuseipdb-verification.html) -->
   <meta name="abuseipdb-verification" content="OkRiMxG5" />
 
-  <title>AgentAegis — Cybersecurity for AI Agents</title>
+  <title>AgentAegis — Pay-per-call cybersecurity for AI agents</title>
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://www.agentaegis.org/" />
+
+  <!-- Favicon (inline SVG shield, scales without rasterization) -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/favicon.svg" />
+
+  <!-- Open Graph (Facebook, LinkedIn, Slack, Discord link previews) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.agentaegis.org/" />
+  <meta property="og:site_name" content="AgentAegis" />
+  <meta property="og:title" content="AgentAegis — Pay-per-call cybersecurity for AI agents" />
+  <meta property="og:description" content="22 cybersecurity workflows callable by any AI agent. Wraps battle-tested open-source engines (nmap, Nuclei, Semgrep, sslyze, trufflehog, trivy). Pay per call via API key or x402 USDC. Patent pending." />
+  <meta property="og:image" content="https://www.agentaegis.org/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="AgentAegis — Pay-per-call cybersecurity for AI agents" />
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AgentAegis — Pay-per-call cybersecurity for AI agents" />
+  <meta name="twitter:description" content="22 cybersecurity workflows callable by any AI agent. Wraps battle-tested open-source engines. Pay per call. Patent pending." />
+  <meta name="twitter:image" content="https://www.agentaegis.org/og-image.png" />
+
+  <!-- Theme color (used by browsers + PWA contexts) -->
+  <meta name="theme-color" content="#0a0e1a" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- JSON-LD: Organization + SoftwareApplication schema for rich results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.agentaegis.org/#organization",
+        "name": "AgentAegis",
+        "alternateName": "AgentAegis MCP",
+        "url": "https://www.agentaegis.org/",
+        "logo": "https://www.agentaegis.org/favicon.svg",
+        "description": "Pay-per-call cybersecurity for AI agents. Wraps battle-tested open-source security engines behind a unified MCP server with dual-rail billing.",
+        "founder": {
+          "@type": "Person",
+          "name": "Andrew Stafford",
+          "url": "https://www.linkedin.com/in/andrewstafford-yourai/"
+        },
+        "sameAs": [
+          "https://github.com/astafford8488/agentaegis-mcp"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "email": "admin@youraigroup.com",
+          "contactType": "customer support"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://www.agentaegis.org/#software",
+        "name": "AgentAegis",
+        "applicationCategory": "SecurityApplication",
+        "applicationSubCategory": "MCP server",
+        "operatingSystem": "Web",
+        "url": "https://www.agentaegis.org/",
+        "description": "Hosted MCP server exposing 22 cybersecurity workflows that AI agents can call per-use. Wraps nmap, Nuclei, Semgrep, sslyze, trufflehog, trivy and threat-intel APIs (NVD, AbuseIPDB, OTX). Two payment rails: API key with monthly budget, or per-call USDC via x402 protocol on Base mainnet.",
+        "author": { "@id": "https://www.agentaegis.org/#organization" },
+        "publisher": { "@id": "https://www.agentaegis.org/#organization" },
+        "offers": [
+          {
+            "@type": "Offer",
+            "name": "Pay-per-call (API key)",
+            "priceCurrency": "USD",
+            "price": "0.10",
+            "description": "Pre-funded API key with monthly budget. $0.10 to $2.00 per tool call. $5 minimum top-up via Stripe.",
+            "url": "https://www.agentaegis.org/pay/"
+          },
+          {
+            "@type": "Offer",
+            "name": "Pay-per-call (x402 USDC)",
+            "priceCurrency": "USD",
+            "price": "0.10",
+            "description": "Per-call cryptographic micropayment via x402 protocol on Base mainnet. No signup required. Settles in ~3 seconds.",
+            "url": "https://agentaegis-mcp-production.up.railway.app/mcp"
+          },
+          {
+            "@type": "Offer",
+            "name": "Free discovery tier",
+            "priceCurrency": "USD",
+            "price": "0",
+            "description": "tools/list, help, account_balance — free, no payment ever required."
+          }
+        ],
+        "featureList": [
+          "Compliance framework check (SOC 2, ISO 27001, HIPAA, PCI DSS, NIST CSF)",
+          "Evidence collection planning for audit controls",
+          "Control gap analysis with prioritized remediation roadmap",
+          "Audit report generation",
+          "Security policy generation",
+          "Network vulnerability scanning (nmap)",
+          "Web application vulnerability scanning (Nuclei)",
+          "Vulnerability prioritization across CVE findings",
+          "CVE detail lookup via NVD",
+          "SSL/TLS audit (sslyze)",
+          "Static application security testing (Semgrep)",
+          "Secret scanning in repositories (trufflehog)",
+          "Dependency vulnerability audit (trivy)",
+          "Incident triage and analysis",
+          "Threat intelligence lookup (AbuseIPDB, OTX, abuse.ch)",
+          "DNS security check",
+          "Email security audit (DMARC, SPF, DKIM)",
+          "Access control review",
+          "MFA configuration audit",
+          "Credential breach exposure check (HIBP)",
+          "Agent-facing help and FAQ",
+          "Account balance query"
+        ],
+        "softwareHelp": { "@type": "CreativeWork", "url": "https://www.agentaegis.org/faq/" },
+        "downloadUrl": "https://agentaegis-mcp-production.up.railway.app/mcp"
+      },
+      {
+        "@type": "WebSite",
+        "url": "https://www.agentaegis.org/",
+        "name": "AgentAegis",
+        "publisher": { "@id": "https://www.agentaegis.org/#organization" },
+        "inLanguage": "en-US"
+      }
+    ]
+  }
+  </script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

@@ -1,0 +1,117 @@
+# AgentAegis
+
+> Pay-per-call cybersecurity workflows for AI agents. AgentAegis wraps battle-tested open-source security engines and threat-intelligence APIs behind a unified MCP server with two payment rails — pre-funded API key, or per-call USDC micropayments via the x402 protocol on Base mainnet.
+
+## What we are
+
+AgentAegis is a hosted Model Context Protocol (MCP) server exposing 22 cybersecurity tools that any AI agent — Claude, GPT, custom agent — can invoke as part of a conversation. Tools are billed per call ($0.10–$2.00 typical, free tier for discovery).
+
+## What we are NOT
+
+We did not build the scanning engines. We are an integration and billing layer over open-source tools.
+
+## What we wrap (the scanning engines)
+
+- nmap (network discovery, GPLv2)
+- Nuclei (web vulnerability scanning, MIT)
+- sslyze (SSL/TLS analysis, AGPL-3.0)
+- Semgrep CE (static code analysis, LGPL-2.1)
+- trufflehog (secret scanning, AGPL-3.0)
+- trivy (dependency and container audit, Apache-2.0)
+
+## Threat intelligence APIs we call
+
+- NVD (NIST National Vulnerability Database — CVE catalog)
+- AbuseIPDB (IP reputation)
+- AlienVault OTX (threat indicators)
+- abuse.ch (URLhaus, Feodo Tracker — malware/botnet IOCs)
+- Have I Been Pwned (breach data)
+
+## What we built (the proprietary layer)
+
+- Dual-rail billing engine — API key with monthly budget OR per-call USDC via x402
+- Body-inspection gating — URL-based gateways break under MCP's multiplexed JSON-RPC
+- Unified rail-discriminator usage log
+- MCP integration that makes the open-source engines callable from any MCP-compatible agent
+- Customer self-service portal at app.agentaegis.org
+- Patent pending — US provisional 64/057,021 (filed 2026-05-04) on the dual-rail + gating architecture
+
+## 22 tools across 6 categories
+
+### Compliance and GRC (5 tools)
+- compliance_framework_check — posture against SOC 2, ISO 27001, HIPAA, PCI DSS, NIST CSF
+- evidence_collect — generate evidence collection plans for audit controls
+- control_gap_analysis — prioritized remediation roadmap with effort estimates
+- audit_report_generate — audit-ready compliance reports
+- policy_generate — tailored security policies (incident response, access control, etc.)
+
+### Vulnerability Management (5 tools)
+- vuln_scan_network — scan IPs/domains for open ports, services, vulnerabilities
+- vuln_scan_web_app — Nuclei-powered web application vulnerability scanning
+- vuln_prioritize — risk-based prioritization across CVE findings
+- cve_lookup — CVE detail lookup via NVD (CVSS, affected packages, references)
+- ssl_tls_audit — sslyze-powered SSL/TLS configuration audit
+
+### Code Security (3 tools)
+- sast_scan — Semgrep-powered static code analysis
+- secret_scan — trufflehog-powered secret detection in repositories
+- dependency_audit — trivy-powered dependency vulnerability audit
+
+### Blue Team and Threat Intel (4 tools)
+- incident_triage — structured incident analysis and prioritization
+- threat_intel_lookup — IP/domain reputation across AbuseIPDB, OTX, abuse.ch
+- dns_security_check — DNS configuration and security analysis
+- email_security_audit — DMARC, SPF, DKIM validation
+
+### Identity and Access (2 tools)
+- access_review — access control audit and review
+- mfa_audit — MFA configuration audit
+
+### Offensive (1 tool)
+- credential_check — HIBP-powered breach exposure check
+
+### Account (2 free tools)
+- help — agent-facing FAQ
+- account_balance — query prepaid balance and recent usage
+
+## Payment rails
+
+### API key
+- Issued at signup at agentaegis.org/pay (Stripe-funded top-up, $5 minimum)
+- Sent as Bearer token in Authorization header
+- Server debits prepaid balance atomically per call
+- Monthly budget cap per key
+
+### x402 USDC micropayments
+- HTTP 402 challenge with payment requirements (network base, asset USDC, EIP-712 domain)
+- Agent signs ERC-3009 transferWithAuthorization (gasless from payer)
+- Server forwards signed payload to facilitator for /verify + /settle
+- On-chain settlement on Base mainnet, median ~3 seconds end-to-end
+- No signup required for the agent
+
+## Links
+
+- Marketing site: https://www.agentaegis.org
+- MCP server endpoint: https://agentaegis-mcp-production.up.railway.app/mcp
+- Customer portal: https://app.agentaegis.org
+- Status page: https://status.agentaegis.org
+- FAQ (mirrors the in-MCP help tool): https://www.agentaegis.org/faq/
+- Pricing: https://agentaegis-mcp-production.up.railway.app/pricing
+- Public health: https://agentaegis-mcp-production.up.railway.app/health
+- Deep health: https://agentaegis-mcp-production.up.railway.app/health/deep
+- GitHub (MCP server): https://github.com/astafford8488/agentaegis-mcp
+- NOTICE / attribution: https://github.com/astafford8488/agentaegis-mcp/blob/master/NOTICE.md
+
+## Pricing summary
+
+- Free tier: tools/list, help, account_balance — no charge, ever
+- Paid tools: $0.10 (CVE lookup) to $2.00 (vuln scan) per call
+- No subscription, no monthly minimum, no commitment
+
+## Founder
+
+Andrew Stafford. 25 years in tech (Amazon, NASA, NetApp, Veradigm). Two startup exits. Solo founder; recruiting cybersecurity operations co-founder.
+
+## Contact
+
+andrew@youraigroup.com or admin@youraigroup.com
